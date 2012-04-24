@@ -1,0 +1,14 @@
+<div class='cms_form'>
+  <% paragraph_options_form_for "Month Schedule Options",:month_schedule ,@options do |f| -%>
+    <%= f.radio_buttons :display, [['Show Availabilities and Bookings','all'],
+                                   ['Show Availabilities only','avail'],
+                                   ['Group Availabilities','group'],
+                                   ['Group Availabilities - Show User Booked','schedule'],
+                                   ['Show User Bookings only','user']
+                                   ],:label => 'Display',
+                                   :separator => '<br/>' %>
+    <%= f.text_field :block_width %>
+    <%= f.text_field :block_height %>
+    <%= f.select :day_page_id, @days %>
+  <% end -%>
+</div>

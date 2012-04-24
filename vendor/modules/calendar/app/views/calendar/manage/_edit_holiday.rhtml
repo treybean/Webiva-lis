@@ -1,0 +1,28 @@
+<div id='edit_booking' class='cms_form' style='width:<%= @area_width %>px; height:<%= @area_height + 100 %>px; padding:10px; overflow:auto;'>
+<h1><%= @holiday.id ? "Edit Holiday" : "Add Holiday" %></h1>
+<% remote_cms_form_for :holiday, @holiday, :html => {:class => 'admin_form'},:update => 'RB_window', :url => { :action => 'edit_holiday' } do |f| -%>
+<% # f.select :calendar_slot_id, @slots 
+%>
+<%= f.date_field :start_on, :noun => 'Starting Date' %>
+<%= f.date_field :end_on, :noun => 'Ending Date', :description => 'Leave ending date empty to keep holiday open ended', :blank => true %>
+<%= f.select :start_time, CalendarAvailability.time_select_options %>
+<%= f.select :end_time, CalendarAvailability.time_select_options %>
+<%= f.select :calendar_slot_ids, CalendarSlot.find_select_options(:all,:order => 'name'), {}, :size => 6,:multiple => true, :label => 'Who', :vertical => true, :style => 'width:300px;', :description => 'Hold down CTRL to select multiple' %>
+
+<% if @holiday.id %>
+  <tr>
+    <td colspan='2'>&nbsp;</td>
+  <tr>
+    <td align='left'>
+       <input class="submit_button" name="submit_form" value="Clear Holiday" onclick='CalEditor.clearHoliday(<%= @holiday.id %>); return false;' type="submit"/>
+    </td>
+    <td align='right'>
+      <input class="submit_button" name="submit_form" value="Submit" type="submit"/>&nbsp;&nbsp;<input class="cancel_button" name="cancel_form" onclick="<%= "CalEditor.showDay('#{(@holiday.start_on || Time.now()).strftime("%Y-%m-%d")}'); return false;" %>" value="Cancel" type="submit"/>
+    </td>
+<% else -%>
+  <%= f.submit_cancel_tags 'Submit','Cancel',{},{:onclick => 'CalEditor.close(); return false;' } %>
+<% end -%>
+
+<% end -%>
+
+</div>

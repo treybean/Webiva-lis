@@ -1,0 +1,9 @@
+<% active_table_for :groups_table, @active_table_output,
+                    :actions => [ [ 'Delete', 'delete', 'Are you sure you want to permanently delete the selected groups?' ] ] do |t| %>
+<tr <%= highlight_row 'group',t.id %> >
+  <td align='left' nowrap='1'><%= entry_checkbox "group", t.id %></td>
+  <td><%= link_to h(t.name), :action => 'group_edit', :path => t %></td>
+</tr>
+
+
+<% end -%>

@@ -1,0 +1,10 @@
+<div class='admin_content'>
+<% admin_form_for :post, @post, :html => { :class => 'admin_form' } do |f| -%>
+<%= f.text_field :subject, :vertical => true %>
+<%= f.end_user_selector :posted_by, :id_field => 'end_user_id', :vertical => true %>
+<%= f.text_area :body, :vertical => true, :required => true %>
+<%= f.filemanager_image :attachment_id, :vertical => true %>
+<%= f.radio_buttons :approved, [['yes', true], ['no', false]], :vertical => true %>
+<%= f.submit_tag @post.id ? 'Update Post' : 'Create Post', :vertical => true%>
+<% end -%>
+</div>

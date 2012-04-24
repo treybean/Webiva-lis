@@ -1,0 +1,9 @@
+<% if topics.size > 0 -%>
+  <% table_for  topics, ["Subject"], :class => 'mini_table', :width => '100%' do |t| -%>
+    <tr>
+      <td><%= link_to( h(t.subject.to_s), t.admin_url, :target => '_blank' )%></td>
+    </tr>
+  <% end -%>
+<% else -%>
+<p><%= 'All topics have replies'.t %></p>
+<% end -%>

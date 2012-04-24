@@ -1,0 +1,21 @@
+
+
+<div class='admin_content'>
+<% admin_form_for :learning_module, @learning_module do |f| -%>
+  <%= f.text_field :name %>
+  <%= f.url_selector :page_url %>
+  <%= f.text_area :description %>
+  <%= f.radio_buttons :hourly, [['Yes',true],['No',false]] %>
+  <%= f.text_field :spacing_minutes, :label => 'Lesson spacing', :description => 'Length of time between lesson activation (in minutes)' %>
+  <%= f.text_area :goal_text, :label => 'Module Goal Fields(One per line)' %>
+  <%= f.select :content_template_id,[['--Select Template--'.t,nil]] +  SiteTemplate.select_options(:conditions => { :template_type => 'site', :parent_id => nil }) %>
+  <%= f.select :email_template_id,[['--Select Template--'.t,nil]] +  MailTemplate.site_template_options %>
+  <%= f.text_field :activation_tags, :description => 'Tags to add to a user on activation' %>
+  <%= f.header 'Warning Emails' %>
+  <%= f.text_field :first_warning_days %>
+  <%= f.select :first_warning_template_id, [['--Selecte Mail Template--',nil]] + MailTemplate.site_template_options %>
+  <%= f.text_field :last_warning_days %>
+  <%= f.select :last_warning_template_id, [['--Selecte Mail Template--',nil]] + MailTemplate.site_template_options %>
+  <%= f.submit_tag 'Create' %>
+<% end -%>
+</div>

@@ -1,0 +1,24 @@
+
+
+<% action_panel do |p| -%>
+<% cms_unstyled_form_for :tracking, @opts do |f| -%>
+First Day: <%= f.date_field :start_date %> Last Day: <%= f.date_field :end_date %> <%= f.submit_tag 'Update' %> 
+<% end-%> 
+<% end -%>
+</div>
+
+<hr/>
+
+
+<div class='admin_content'>
+  Total: <%= @total_cnt %><br/><br/>
+
+<% table_for @tbl, [ 'Instructor','Students','Payment'], :class=>'active_table' do |t| -%>
+<tr>
+  <td><%= v(t[0].name) %></td>
+  <td><%= v(t[1]) %></td>
+  <td><%= number_to_currency(t[2]) %></td>
+</tr>
+<% end -%>
+
+</div>

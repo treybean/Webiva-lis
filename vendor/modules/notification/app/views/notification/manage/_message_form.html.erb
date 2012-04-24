@@ -1,0 +1,30 @@
+<% admin_form_for :message, @message do |f| -%>
+  <%= f.select :view_type, NotificationMessage.view_type_select_options, :required => true %>
+  <%= f.datetime_field :starts_at, :blank => true %>
+  <%= f.datetime_field :expires_at, :blank => true %>
+  <%= f.header 'Users', :description => 'To select everyone leave User and Tags empty' %>
+  <%= f.end_user_selector :end_user, :label => 'User', :description => 'Select a user to notify' %>
+  <%= f.check_boxes :tags, Tag.select_options, :description => 'Select groups of users by their tags' %>
+  <%= f.header 'Message' %>
+  <% if @num_types == 1 -%>
+    <%= f.hidden_field :notification_type_id %>
+  <% else -%>
+    <%= f.select :notification_type_id, NotificationType.select_options_with_nil, {}, :required => true, 'j-action' => 'updateform' %>
+  <% end -%>
+
+  <% if @message.content_model -%>
+    <% cms_subfields_for 'message[data_model]', @message.data_model do |cf| -%>
+      <% @message.content_model.content_model_fields.each do |field| -%>
+          <%= field.form_field(cf, :editor => true) %>
+      <% end -%>
+    <% end -%>
+
+    <%= f.spacer %>
+    <%= f.submit_tag @message.id ? 'Save' : 'Create' %>
+  <% end -%>
+
+<% end -%>
+
+<script>
+JSetup.setup();
+</script>

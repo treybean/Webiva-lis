@@ -1,0 +1,60 @@
+<script>
+var LessonEditor = {
+
+  timer : null,
+  
+  setUpdateTimer: function() {
+    if(LessonEditor.timer)
+      clearTimeout(LessonEditor.timer);
+    
+    LessonEditor.timer = setTimeout(LessonEditor.updateContent,2000);
+  },
+
+  updateContent: function() {
+    var params = Form.serialize('lesson_form');
+    new Ajax.Request("<%= url_for :action => 'update', :path => [ @mod.id ] %>", { parameters: params, onComplete: LessonEditor.refreshContent } );
+  
+  },
+  
+  refreshContent: function(req) {
+    LessonEditor.modifyContentPreview(req.responseText);
+  },
+  
+  modifyContentPreview: function(txt) {
+    $('lesson_preview_body').contentWindow.document.open();
+    $('lesson_preview_body').contentWindow.document.write(txt);
+    $('lesson_preview_body').contentWindow.document.close();
+  }
+}
+
+</script>
+
+<div class='admin_content'>
+<% admin_form_for :lesson, @lesson, :html => { :id => 'lesson_form' } do |f| -%>
+  <%= f.header 'Lesson' %>
+  <%= f.text_field :title, :size => 45 %>
+  <%= f.text_field :short_title, :size => 45 %>
+  <%= f.text_field :spacing_override_minutes,:description => 'Leave blank to advance lessons at module rate',:label => 'Spacing Override' %>
+  <%= f.header 'Goals' %>
+  <% @mod.goals.each_with_index do |goal,idx| -%>
+  <tr>  
+    <td class='label'><%= goal %></td>
+    <td class='data text_field_control'><input type='text' size='30' name='lesson[goals][]' value='<%= vh @lesson.goals[idx] %>' /></td>
+  </tr>
+  <% end -%>
+  
+  <%= f.header 'Media and Content' %>
+  <%= f.filemanager_image :image_file_id %>
+  <%= f.filemanager_file :media_file_id %>
+  <% f.custom_field :content, :vertical => true do -%>
+    <%= f.text_area :content, :vertical => true, :style => 'width:450px; height:500px;', :cols => 80, :unstyled => true, :onkeydown => "LessonEditor.setUpdateTimer();" %>
+    <iframe style='width:450px;height:500px;border:1px solid #CCCCCC; overflow:auto;' id='lesson_preview_body' frameborder='0'></iframe>  
+    <script>  
+        LessonEditor.modifyContentPreview("<%= jh(render( :partial => 'update'))  %>");
+    </script>
+  <% end -%>
+  <%= f.image_list :image_list, :vertical => true, :label => 'Referenced Media' %>
+  <%= f.text_area :email_content, :vertical => true, :rows => 30, :cols => 80 %>
+  <%= f.submit_tag 'Submit' %>
+<% end -%>
+</div>

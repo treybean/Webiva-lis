@@ -1,0 +1,16 @@
+<% active_table_for :user_booking_table, @booking_tbl,
+            :refresh_url => url_for(:controller => '/calendar/manage', :action => 'display_user_booking_table',
+                                    :path => @user.id)  do |t| -%>
+<tr <%= highlight_row 'user_credit',t.id %> >
+  <td><% if t.to_time > Time.now %>
+        <b><%= t.booking_on.strftime(DEFAULT_DATE_FORMAT.t) %></b>
+      <% else -%>
+          <%= t.booking_on.strftime(DEFAULT_DATE_FORMAT.t) %>
+      <% end -%>
+  </td>
+  <td><%= t.time %><% if !t.confirmed? %>(UNCONFIRMED)<% end -%></td>
+  <td><%= t.calendar_slot ? t.calendar_slot.name : '-' %></td>
+</tr>
+
+<% end -%>
+

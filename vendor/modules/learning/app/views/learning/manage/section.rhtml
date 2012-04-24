@@ -1,0 +1,7 @@
+<div class='admin_content'>
+<% admin_form_for :section, @section, :html => { :id => 'lesson_form' } do |f| -%>
+  <%= f.text_field :name %>
+  <%= f.radio_buttons :visible, [ ['Yes',true],['No',false ]]  %>
+  <%= f.submit_tag 'Submit' %>
+<% end -%>
+</div>

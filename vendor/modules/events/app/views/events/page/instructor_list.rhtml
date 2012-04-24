@@ -1,0 +1,7 @@
+<div class='cms_form'>
+  <% paragraph_options_form_for "Instructor List",:instructor_list,@options do |f| -%>
+    <%= f.select :detail_page_id, @pages, :label => 'Detail Page'.t %>
+    <%= f.select :event_page_id, @pages, :label => 'Event Page'.t %>
+    <%= f.select :events_credit_type_id, [['--Show All--',nil]] + EventsCreditType.find_select_options -%>
+  <% end -%>
+</div>

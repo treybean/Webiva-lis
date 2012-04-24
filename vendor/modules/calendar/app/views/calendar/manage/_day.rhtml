@@ -1,0 +1,19 @@
+<div style='padding:10px;' class='admin_form'>
+<table style='width:<%= @area_width %>px;' cellspacing='0' cellpadding='0'>
+<tr>
+  <td align='left'><input class='submit_button' type='submit' value='&lt;&lt; Prev'  onclick='CalEditor.showDay("<%= @date.yesterday.strftime("%Y-%m-%d") %>"); return false;'></td>
+  <td align='center'><h4>Showing <%= @date.strftime("%A %B %d, %Y") %></h4></td>
+  <td align='right'><input class='submit_button' type='submit' value='Next &gt;&gt;'  onclick='CalEditor.showDay("<%= @date.tomorrow.strftime("%Y-%m-%d") %>"); return  false;'></td>
+</tr>
+</table>
+
+<div style='width:<%= @area_width %>px; height:<%= @area_height+40 %>px; padding:10px; overflow:auto; margin-top:10px;'>
+<div id='day_info' style='border:1px solid #EEEEEE; margin:5px;'>
+  <%= render :partial => 'day_info' %>
+</div>
+</div>
+
+<div align='center' class='admin_form' style='padding:5px;'>
+  <input type='submit' value='Close' onclick='CalEditor.close(); return false;' class='submit_button'>
+</div>
+</div>

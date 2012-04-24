@@ -1,0 +1,9 @@
+<div class='cms_form'>
+<%  paragraph_options_form_for :month_list do |f| -%>
+  <%= f.select :target_type, [['All Events','all'],['Target Events only','targeted']] %>
+  <%= f.page_selector :detail_page_id %>
+  <%= f.radio_buttons :overlay, [['Yes',true],['No',false]] %>
+  <%= f.text_field :block_width %>
+  <%= f.text_field :block_height %>
+<% end -%>
+</div>

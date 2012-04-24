@@ -1,0 +1,11 @@
+<div class='cms_form'>
+
+<% paragraph_options_form_for "Event Detail","event_detail",@options do |f| %>
+    <%= f.select :list_page_id, [ ['--Select List Page--','' ]] + SiteNode.page_options,:vertical => true %>
+    <%= f.select :instructor_page_id, [ ['--Select Instructor Detail Page--','' ]] + SiteNode.page_options,:vertical => true %>
+    <%= f.select :checkout_page_id, [[ '--Select Checkout Page--',nil]] +  @pages, :description => 'Checkout page', :vertical => true %>
+    <%= f.select :booking_credit_product_id, [[ '--Select Credit Pack Product--',nil]] +  @products, :description => 'Buy more', :vertical => true %>
+    <%= f.text_field :minutes_hold_time, :description => 'Minutes to hold each booking until it is confirmed', :vertical => true %>    
+<% end -%>
+
+</div>

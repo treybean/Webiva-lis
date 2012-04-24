@@ -1,0 +1,15 @@
+<% action_panel :more => true do |p| -%>
+  <%= p.link "Create a new Notification", :action => 'message', :icon => 'add.gif' %>
+<% end -%>
+
+<% more_action_panel do |p| -%>
+  <%= p.link "Notification Types", :action => 'types', :icon => 'configure.gif' %>
+<% end -%>
+
+<hr/>
+
+<div class='admin_content'>
+  <div id='messages_table'>
+    <%= render :partial => 'messages_table' %>
+  </div>
+</div>

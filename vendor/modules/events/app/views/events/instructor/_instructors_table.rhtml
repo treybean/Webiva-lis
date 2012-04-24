@@ -1,0 +1,9 @@
+<% active_table_for :instructors_table, @tbl,
+      :actions => [['Delete','delete','Delete the selected instructors?']] do |t| -%>
+<tr <%= highlight_row 'instructor',t.id %>>
+  <td><%= entry_checkbox 'instructor',t.id %></td>
+  <td><%= image_tag(t.image_file.url(:thumb)) if t.image_file %></td>
+  <td><%= link_to v(t.name), :action => 'edit', :path => [ t.id ] %></td>
+  <td><%= v(t.description[0..40]) %></td>
+</tr>
+<% end -%>

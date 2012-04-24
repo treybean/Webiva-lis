@@ -1,0 +1,22 @@
+<% active_table_for :user_booking_table, @booking_tbl, :update => 'events_booking_table',
+            :refresh_url => url_for(:controller => '/events/user', :action => 'display_user_booking_table',:path => @user.id, :tab => @tab),
+            :actions => [['Cancel Booking','cancel','Cancel this users booking?']]  do |t| -%>
+<tr <%= highlight_row 'user_class',t.id %> >
+  <td><%= entry_checkbox 'user_class',t.id %></td>
+  <td><% if t.events_event.event_starts_at > Time.now %><b><% end -%>
+      <%= link_to t.events_event.name, :controller => '/events/manage', :action => 'view', :path => [ t.events_event_id ] %>
+      <% if t.events_event.event_starts_at > Time.now %></b><% end -%>
+  </td>
+  <td><%= t.events_event.event_on.strftime(DEFAULT_DATE_FORMAT.t) %></td>
+  <td><%= t.events_event.start_time_display %></td>
+</tr>
+
+<% end -%>
+
+<% if @refresh_all %>
+<script>
+  setTimeout(function () {
+  new Ajax.Updater("tab_<%= @tab %>","<%= url_for :action => 'view', :path => [ @user.id ], :tab => @tab %>");
+  },10);
+</script>
+<% end -%>

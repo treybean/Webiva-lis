@@ -1,0 +1,9 @@
+<div class='admin_content'>
+<% cms_form_for :slot, @slot, :html => { :class => 'admin_form' } do |f| -%>
+  <%= f.text_field :name, :required => true %>
+  <%= f.color_field :color %>
+  <%= f.select :calendar_slot_group_id, @slot_groups %>
+  <%= f.submit_tag @slot.id ? 'Update Slot' : 'Create Slot' %>
+<% end -%>
+
+</div>

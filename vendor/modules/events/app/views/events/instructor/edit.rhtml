@@ -1,0 +1,10 @@
+<div class='admin_content'>
+<% cms_form_for :instructor,@instructor, :html => { :class => 'admin_form'} do |f| -%>
+  <%= f.text_field :name, :vertical => true, :required => true, :size => 40 %>
+  <%= f.filemanager_image :image_file_id, :vertical => true %>
+  <%= f.text_area :description, :vertical => true, :rows => 5,:cols => 120, :required => true  %>
+  <%= f.editor_area :details, :vertical => true, :rows => 15 %>
+  <%= f.end_user_selector :end_user_id, :label => 'Linked to user',:vertical => true, :no_name => true %>
+  <%= f.submit_tag "Submit" %>
+<% end -%>
+</div>

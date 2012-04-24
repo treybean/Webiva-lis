@@ -1,0 +1,17 @@
+<script>
+<%= active_table_javascript %>
+</script>
+
+<% action_panel do |p| -%>
+  <%= p.link "Add New Product",:icon => 'add.png', :action => 'edit' %>
+  <%= p.link "Edit Product Classes",:icon => 'pen.png', :controller => '/shop/classes' %>
+  <%= p.link "Import",:icon => 'upload.gif', :action => 'import' %>      
+<% end -%>
+
+<hr/>
+<div class='admin_content'>
+  <div id='product_table'>
+    <%= render :partial => 'product_table' %>
+  </div>
+
+</div>

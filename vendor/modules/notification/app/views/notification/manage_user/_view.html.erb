@@ -1,0 +1,22 @@
+<script>
+NotificationData = {
+  viewMessages: function() {
+    $j('#tab_<%= @tab %>').load("<%= url_for :action => 'view', :path => [@user.id], :tab => @tab %>");
+  }
+}
+</script>
+
+<% ajax_tabs ['Messages', ['Notify', jvh("$j('#notify').load('#{url_for(:action => 'notify', :path => @user.id, :tab => @tab)}')")]], 'Messages' do |t| -%>
+
+<% t.tab do -%>
+<div id="user_messages_table">
+  <%= render :partial => 'user_messages_table' %>
+</div>
+<% end -%>
+
+<% t.tab do -%>
+<div id="notify">
+</div>
+<% end -%>
+
+<% end -%>

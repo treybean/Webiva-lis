@@ -1,0 +1,41 @@
+<table cellspacing='0' style='border:1px solid #CCCCCC;' class='calendar_table admin_form'>
+<tr>
+<td style='padding:5px;'>
+  <input class='submit_button' type='submit' value='&lt;&lt; Prev'  onclick='CalEditor.previousMonth(<%= @visible_year %>,<%= @visible_month %>);'>
+</td>
+<td colspan='5' align='center' height='20'>
+<h4>Displaying <%= @visible_date.strftime("%B %Y") %></h4>
+
+</td>
+<td style='padding:5px;' align='right'>
+  <input class='submit_button' type='submit' value='Next &gt;&gt;'  onclick='CalEditor.nextMonth(<%= @visible_year %>,<%= @visible_month %>);'>
+</td>
+</tr>
+<% @blocks.each do |week| -%>
+  <tr>
+  <% week.each do |day| -%>
+    <td align='left' valign='top' style='border:1px solid #AAAAAA;'>
+    <div class='calendar_day'  onclick='CalEditor.showDay("<%= day[:date].strftime("%Y-%m-%d") %>");' >
+      <div class='calendar_day_text'>
+      <% if day[:date].month == @visible_month %>
+      <b><%= day[:date].day %> <%= day[:date].strftime("%B") if day[:date].day == 1 %></b>
+      <% else -%>
+      <%= day[:date].day %> <%= day[:date].strftime("%B") if day[:date].day == 1 %>
+      <% end -%>
+      </div>
+      <% if day[:slots] -%>
+      <% day[:slots].each do |slot_id,slot|%>
+        <% slot.each do |block| -%>
+        <div style='<%= calendar_block_style(block,4,4) %>' title='<%= vh(block[:description]) %>' ></div>
+        <% end -%>
+      <% end -%>
+      <% end -%>
+    </div>
+    </td>
+  <% end -%>
+  </tr>
+
+<% end -%>
+
+</table>
+

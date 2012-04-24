@@ -1,0 +1,14 @@
+<div style='padding:5px;' id='event_repeat_item_<%= idx %>'>
+<%= repeat.repeat_type_display %> at <%= repeat.start_time_display %> starting <%= repeat.start_on.strftime(DEFAULT_DATE_FORMAT.t) %> 
+with <select name='event[repeats][][events_instructor_id]'> <%= options_for_select [['--Same Instructor--','']] + @instructors, repeat.events_instructor_id %></select>
+at <select name='event[repeats][][map_location_id]'><%= options_for_select [['--Same Location--',nil]] +  @locations , repeat.map_location_id %></select>
+<br/>
+(<a href='javascript:void(0);' onclick='EventEditor.deleteRepeat(<%= idx %>);' >Remove</a>
+ <% if repeat.id %>| <a href='javascript:void(0);' onclick='EventEditor.destroyRepeat(<%= idx %>);' >Remove w/ Upcoming</a> <% end -%>)
+<input type='hidden' name='event[repeats][][deleted]' id='repeat_deleted_<%= idx %>' value='' />
+<input type='hidden' name='event[repeats][][id]' value='<%= repeat.id %>'/>
+<input type='hidden' name='event[repeats][][repeat_type]' value='<%= repeat.repeat_type %>'/>
+<input type='hidden' name='event[repeats][][start_time]' value='<%= repeat.start_time %>'/>
+<input type='hidden' name='event[repeats][][start_on]' value='<%= repeat.start_on %>'/>
+
+</div>

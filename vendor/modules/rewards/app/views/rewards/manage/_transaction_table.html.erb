@@ -1,0 +1,14 @@
+<% active_table_for :transaction_table, @active_table_output,
+                    :refresh_url => url_for(:action => 'transaction_table', :path => @user ? @user.id : nil),
+                    :style => 'width:100%' do |t| %>
+<tr <%= highlight_row 'transaction',t.id %> >
+  <td><%= link_to t.rewards_user.end_user.name, :action => 'transactions', :path => t.rewards_user.id %></td>
+  <td align="center"><%= t.used ? (t.credit? ? "<span style='color:green;'>#{t.amount}</span>" : "<span style='color:red;'>-(#{t.amount})</span>") : t.amount %></td>
+  <td align="center"><%= t.transaction_type_display %></td>
+  <td align="center"><%= t.used ? 'Yes'.t : 'No'.t %></td>
+  <td><%= h t.note %></td>
+  <td><%= h t.admin_user ? t.admin_user.name : '' %></td>
+  <td align="center"><%= t.created_at ? t.created_at.strftime(DEFAULT_DATETIME_FORMAT.t) : '-' %></td>
+  <td align="center"><%= t.updated_at ? t.updated_at.strftime(DEFAULT_DATETIME_FORMAT.t) : '-' %></td>
+</tr>
+<% end -%>

@@ -1,0 +1,29 @@
+<% admin_form_for :message, @message, :html => {'j-action' => 'submitform', 'submitform' => url_for(:action => 'notify')} do |f| -%>
+  <%= hidden_field_tag :tab, @tab %>
+  <%= f.select :view_type, NotificationMessage.view_type_select_options, :required => true %>
+  <%= f.datetime_field :starts_at, :blank => true %>
+  <%= f.datetime_field :expires_at, :blank => true %>
+  <%= f.header 'Message' %>
+
+  <% if @num_types == 1 -%>
+    <%= f.hidden_field :notification_type_id %>
+  <% else -%>
+  <%= f.select :notification_type_id, NotificationType.select_options_with_nil, {}, :required => true, 'j-action' => 'updateform', 'updateform' => url_for(:action => 'notify', :path => @user.id) %>
+  <% end -%>
+
+  <% if @message.content_model -%>
+    <% cms_subfields_for 'message[data_model]', @message.data_model do |cf| -%>
+      <% @message.content_model.content_model_fields.each do |field| -%>
+          <%= field.form_field(cf, :editor => true) %>
+      <% end -%>
+    <% end -%>
+
+    <%= f.spacer %>
+    <%= f.submit_tag @message.id ? 'Save' : 'Create' %>
+  <% end -%>
+
+<% end -%>
+
+<script>
+JSetup.setup();
+</script>

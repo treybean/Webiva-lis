@@ -1,0 +1,17 @@
+<div class='admin_content'>
+<% admin_form_for :forum_category, @forum_category, :html => { :class => 'admin_form' } do |f| -%>
+<%= f.text_field :name, :vertical => true, :required => true %>
+<%= f.text_area :description, :vertical => true %>
+<%= f.select :content_filter, ForumCategory.filter_user_options, :vertical => true %>
+<%= f.text_field :weight, :vertical => true %>
+<%= f.check_boxes :allow_attachments, [['Allow users to upload attachments', true]], :vertical => true, :single => true %>
+<%= f.text_field :file_size_limit, :vertical => true %>
+<%= f.filemanager_folder :folder_id, :vertical => true %>
+<%= f.access_control :admin_permission, 'Limit who is allowed to administer these forums', :vertical => true %>
+<%= f.access_control :post_permission, 'Limit who is allowed to post to these forums', :vertical => true %>
+<%= f.check_boxes :allow_anonymous_posting, [['Allow anonymous users to post', true]], :label => '', :vertical => true, :single => true %>
+<%= f.select :subscription_template_id, [['Use default subscription template', nil]] + MailTemplate.select_options, :label => 'Topic subscription email'.t, :vertical => true %>
+<%= f.check_boxes :add_to_site, [["Run the add to site wizard".t,true]], :single => true, :vertical => true -%>
+<%= f.submit_tag @forum_category.id ? 'Update Forum Category' : 'Create Forum Category', :vertical => true%>
+<% end -%>
+</div>

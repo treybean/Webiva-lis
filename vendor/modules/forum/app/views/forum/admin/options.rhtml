@@ -1,0 +1,7 @@
+<div class='admin_content'>
+<% cms_form_for :options, @options, :html => {:class =>'admin_form' } do |f| -%>
+<%= f.select :subscription_template_id, [['Select mail template', nil]] + MailTemplate.select_options, :label => 'Topic subscription email'.t %>
+<%= f.submit_tag 'Save' %>
+
+<%  end -%>
+</div>

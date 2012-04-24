@@ -1,0 +1,6 @@
+<div class='cms_form'>
+  <% paragraph_options_form_for "User Session Options",:user_bookings ,@options do |f| -%>
+    <%= f.radio_buttons :allow_cancellations, [ ['Yes','yes'],['No','no'] ],:onclick => '$("user_bookings_cancellation_hours").disabled = this.value == "no";' %>
+    <%= f.text_field :cancellation_hours, :description => 'Cancellation period (in hours)', :disabled => ( @options.allow_cancellations =='no') %>
+  <% end -%>
+</div>

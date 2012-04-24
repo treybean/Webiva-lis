@@ -1,0 +1,125 @@
+<script>
+EventEditor = {
+  repeatIdx: <%= @event.repeats.length %>,
+  
+  addRepeating: function() {
+   var params = {
+     repeat_type: $('repeat_repeat_type').value,
+     start_time: $('repeat_start_time').value,
+     start_on: $('repeat_start_on').value,
+     map_location_id: $('repeat_map_location_id').value,
+     events_instructor_id: $('repeat_events_instructor_id').value,
+     idx: EventEditor.repeatIdx++
+   }
+   
+   
+   
+   new Ajax.Updater('event_repeat_list',
+                    "<%= url_for :action => 'add_repeat', :path => [ @event.id ]  %>",
+                    { parameters: params,
+                      insertion: 'bottom' });
+    
+  },
+  
+  destroyRepeat: function(idx) {
+    if(confirm("<%= 'Delete this scheduled time and remove any existing entries?'.t %>")) {
+      $('event_repeat_item_' + idx).style.textDecoration = 'line-through'
+      $('repeat_deleted_' + idx).value = 'destroy';
+    }
+  },
+  
+  deleteRepeat: function(idx) {
+    if(confirm("<%= 'Delete this scheduled time but leave existing entries?'.t %>")) {
+      $('event_repeat_item_' + idx).style.textDecoration = 'line-through'
+      $('repeat_deleted_' + idx).value = 'delete';
+    }
+  },
+  
+  takeRepeat: function(idx) {
+    $('update_parent_repeating').value = '1'
+    $("repeat_details").style.display = "";
+    $("event_repeat_1").checked = true;
+    
+    var params = { parent: 1 }
+     new Ajax.Updater('event_repeat_list',
+                    "<%= url_for :action => 'add_repeat', :path => [ @event.id ]  %>",
+                    { parameters: params,
+                      insertion: 'bottom' });
+  }
+  
+
+}
+
+</script>
+
+<div class='admin_content'>
+
+<% if @event.parent_event_id  %>
+<div id='warning_form'>
+<div class='admin_form' style='width:600px; border:1px solid #CCCCCC; padding:30px; margin:10px;'>
+<b>This <%= @opts.event_name.downcase %> was created automatically by a repeating event. If you updated it, it will no longer be updated when that  <%= @opts.event_name.downcase %> is updated. You Can:</b><br/><br/>
+  <b><a href='<%= url_for :action=>'edit', :path => [ @event.parent_event_id ] %>'>Edit the original <%= @opts.event_name.downcase %> (Recommended)  </a></b><Br/><br/>
+  
+  <a href='javascript:void(0);' onclick="Element.hide('warning_form'); Element.show('event_form');">Edit it Anyway</a><br/><br/>
+  <a href='javascript:void(0);' onclick="Element.hide('warning_form'); Element.show('event_form'); EventEditor.takeRepeat();">Edit it, and make this <%= @opts.event_name.downcase %> the parent of any other <%= @opts.events_name.downcase %> at the same time each week. </a>
+
+</div>
+</div>
+<% end -%>
+
+<div id='event_form' <%= "style='display:none;'" if @event.parent_event_id %>>
+
+<% cms_form_for :event, @event, :html => { :class => 'admin_form'  } do |f| -%>
+  <input type='hidden' name='update_parent_repeating' value='' id='update_parent_repeating' />
+  <%= f.text_field :name, :required => true, :vertical => true, :size => 100,:label => @opts.event_name + " Name" %>
+  <tr><td colspan='2'><input type='submit' value='Update' style='display:none;'/></td></tr>
+  <% tabled_ajax_tabs [@opts.event_name + " Information",'Detailed Description','Repeat'],@opts.event_name + " Information" do |t| -%>
+    <% t.tabled_tab do -%>
+      <%= f.text_field(:subtitle, :label => @opts.subtitle_name, :vertical => true, :size => 80) unless @opts.subtitle_name.blank? %>
+      <%= f.select :map_location_id, [['--Select Location--',nil]] + @locations, :vertical => true, :size => 80 %>
+      <%= f.select :events_instructor_id, [['--Select--','']] + @instructors, :label => @opts.instructor_name, :vertical => true, :size => 80 %>
+      <%= f.text_area :description, :rows => 10, :cols => 80, :vertical => true %>
+      <%= f.select :events_credit_type_id, EventsCreditType.find_select_options(:all,:order => 'id') + [['No Credits Accepted',0]],:vertical => true, :label => 'Credit Type' %>
+      <%= f.header "Schedule" %>
+      <%= f.date_field :event_on, :label => 'Date', :required => true %>
+      <%= f.select :start_time, EventsEvent.time_select_options, :required => true %>
+      <%= f.select :duration, EventsEvent.duration_select_options, :required => true %>
+      <%= f.text_field :event_spaces, :label => 'Spaces', :required => true %>
+      <%= f.check_box :no_cancel, :label => 'Cannot be cancelled' %>
+    <% end -%>
+    <% t.tabled_tab do -%>
+      <%= f.filemanager_image :image_file_id, :vertical => true %>
+      <%= f.filemanager_image :icon_file_id, :vertical => true %>
+      <%= f.editor_area :details, :style => 'height:400px; width:100%', :vertical => true %>
+      <%= f.filemanager_file :document_file_id, :vertical => true %>
+    <% end -%>
+    <% t.tabled_tab do -%>
+      <tbody>
+      <%= f.radio_buttons 'repeat', [['Yes',true],['No',false]], :description => 'This ' + @opts.event_name + ' repeats',:onclick => '$("repeat_details").style.display = this.value == "1" ? "" : "none";',:vertical=>true %>
+      </tbody>
+      <tbody id='repeat_details' <%= "style='display:none;'" unless @event.repeat? %>>
+      <%= f.text_field :days_advance,:vertical=>true %>
+      <% f.custom_field 'Repeat Details',:vertical => true do -%>
+        <div id='event_repeat_list'>
+          <% @event.repeats.each_with_index do |repeat,idx| -%>
+            <%= render :partial => 'repeat', :locals => {:repeat => repeat, :idx => idx } %>        
+          <% end -%>
+        </div>
+        
+        <% cms_unstyled_fields_for :repeat, @repeat do |sf| -%>
+          <%= sf.select :repeat_type, EventsRepeat.repeat_type_select_options %>
+          at <%= sf.select :start_time, EventsEvent.time_select_options %>
+          starting <%= sf.date_field :start_on %><button onclick='EventEditor.addRepeating(); return false;'>Add</button> <br/>
+          (Optional Different <%= @opts.instructor_name %> <%= sf.select :events_instructor_id, [['--Select--','']] + @instructors %>)<br/>
+          (Optional Different Location <%= sf.select :map_location_id, [['--Same Location--',nil]] +  @locations %>)
+        <% end -%>
+      <% end -%>
+      </tbody>
+    <% end -%>
+  <% end -%>
+  <%= f.submit_tag @event.id ? 'Edit' : 'Create' %>
+<% end -%>
+
+</div>
+
+</div>

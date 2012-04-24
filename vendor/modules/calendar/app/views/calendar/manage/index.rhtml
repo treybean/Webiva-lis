@@ -1,0 +1,116 @@
+
+<script>
+  CalEditor = {
+  
+    nextMonth: function(year,month) {
+      var params = {
+            view: 'next_month', year:year, month:month 
+                      };
+                      
+      CalEditor.updateCalendar(params);
+    },
+    
+    previousMonth: function(year,month) {
+      var params = {
+            view: 'previous_month', year:year, month:month 
+                      };
+                      
+      CalEditor.updateCalendar(params);
+    },
+    
+    updateCalendar: function(params) {
+      new Ajax.Updater('display_calendar',CalEditor.calendarUrl, { parameters: params, evalScripts:true});
+    
+    },
+    
+    showDay: function(date) {
+      var params = { date: date };
+      if($('RB_window')) 
+        new Ajax.Updater('RB_window',CalEditor.dayUrl, { parameters: params, evalScripts:true });
+      else
+        SCMS.remoteOverlay(CalEditor.dayUrl, { date: date });
+    },
+    
+    addBooking: function(date,availability,start_time,end_time) {
+      var params = { date: date, start_time: start_time, end_time: end_time, availability: availability };
+      if($('RB_window'))
+        new Ajax.Updater('RB_window',CalEditor.baseURL + "/edit_booking",{ parameters: params, evalScripts:true });
+      else
+        SCMS.remoteOverlay(CalEditor.baseURL + "/edit_booking", params );
+    },
+    
+    editBooking: function(booking_id) {
+      var params = {  };
+      new Ajax.Updater('RB_window',CalEditor.baseURL + "/edit_booking/" + booking_id,{ parameters: params, evalScripts:true });
+    },
+    
+    bookingNameUpdate: function(field,id,val) {
+      $('booking_recipient_name').value = id ? val : '';
+      $('booking_recipient_name').disabled = id ? true : false;
+    },
+    
+    close: function() {
+      RedBox.close();
+      if($('RB_window'))
+        Element.remove('RB_window');
+    
+    },
+    
+    cancelBooking: function(booking_id,date) {
+      var params = { date: date, cancel_booking_id:booking_id };
+      new Ajax.Updater('RB_window',CalEditor.dayUrl, { parameters: params, evalScripts:true, onComplete: function(req) {
+        CalEditor.updateCalendar({ date: date }) }
+       });
+    },
+    
+    clearHoliday: function(holiday_id,date) {
+      var params = { date: date, cancel_holiday_id:holiday_id };
+      new Ajax.Updater('RB_window',CalEditor.baseURL + "/clear_holiday/", { parameters: params, evalScripts:true, onComplete: function(req) {
+        CalEditor.updateCalendar({ date: date });
+        CalEditor.close(); }
+       });
+    },
+    
+    editHoliday: function(holiday_id) {
+      if($('RB_window'))
+        new Ajax.Updater('RB_window',CalEditor.baseURL + "/edit_holiday/" + holiday_id,{  evalScripts:true });
+      else
+        SCMS.remoteOverlay(CalEditor.baseURL + "/edit_holiday/" + holiday_id );
+    },
+    
+    addHoliday: function(date,availability,start_time,end_time) {
+      var params = { date: date, start_time: start_time, end_time: end_time, availability: availability };
+      if($('RB_window'))
+        new Ajax.Updater('RB_window',CalEditor.baseURL + "/edit_holiday",{ parameters: params, evalScripts:true });
+      else
+        SCMS.remoteOverlay(CalEditor.baseURL + "/edit_holiday", params );
+    }
+
+
+    
+  
+  };
+  
+  CalEditor.baseURL =   "<%= url_for :controller => '/calendar/manage' %>";
+  CalEditor.dayUrl = "<%= url_for :action => 'show_day' %>";
+  CalEditor.calendarUrl = "<%= url_for :action=>'display_calendar' %>";
+</script>
+
+
+
+<% action_panel do |p| -%>
+  <%= p.link 'Add an Booking', { :icon => 'add.gif', :url => 'javascript:void(0);' },:onclick => 'CalEditor.addBooking();' %>
+  <% # p.link 'Add an Event',:icon => 'add.gif',:action => 'event' %>
+  <%=  p.link 'Add a Holiday', {:icon => 'edit.gif',:url => 'javascript:void(0);' }, :onclick => 'CalEditor.addHoliday();'%>
+  <%= p.link 'Add Availablity',:icon => 'edit.gif',:controller => '/calendar/slots', :action => 'availability', :main => 1 %>
+  <%= p.link 'Configure Calendar',:icon => 'configure.gif', :controller => '/calendar/slots' %>
+<% end -%>
+
+<hr/>
+<br/>
+<div class='admin_content'>
+  <div id='display_calendar'>
+  <%= render :partial => 'calendar' %>
+  </div>
+</div>
+

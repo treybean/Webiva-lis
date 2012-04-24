@@ -1,0 +1,19 @@
+<script>
+<%= active_table_javascript %>
+</script>
+
+<% action_panel do |p| -%>
+  <%= p.link 'Add Availability',:icon => 'add.gif',:action => 'availability', :availability => { :calendar_slot_id => @slot.id  } %>
+
+<% end -%>
+
+<hr/>
+
+
+<div class='admin_content'>
+  <div id='availabilities_table'>
+    <%= render :partial => 'availabilities_table' %>
+  </div>
+
+</div>
+

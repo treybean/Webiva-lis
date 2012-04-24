@@ -1,0 +1,8 @@
+<div class='cms_form'>
+  <% paragraph_options_form_for "Repeat List",:repeat_list,@options do |f| -%>
+    <%= f.select :detail_page_id, @pages, :label => 'Detail Page'.t %>
+    <%= f.select :instructor_page_id, [ ['--Select Instructor Page--','' ]] + SiteNode.page_options %>
+    <%= f.select :events_credit_type_id, [['--Show All--',nil]] + EventsCreditType.find_select_options -%>
+  
+  <% end -%>
+</div>

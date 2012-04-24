@@ -1,0 +1,12 @@
+<% action_panel :more => true do |p| -%>
+<% end -%>
+
+<% more_action_panel do |p| -%>
+  <%= p.link 'All Transactions', :action => 'transactions', :icon => 'view.gif' %>
+<% end -%>
+
+<div class='admin_content'>
+<div id='user_table'>
+<%= render :partial => 'user_table' %>
+</div>
+</div>

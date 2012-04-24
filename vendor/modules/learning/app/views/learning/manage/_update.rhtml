@@ -1,0 +1,14 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<% if @mod.content_template_id -%>
+   <link href="/stylesheet/<%= @mod.content_template_id %>.css?editor=1" rel="Stylesheet" type="text/css" />
+<% end -%>
+
+</head>
+
+<body onload=''> 
+<%= @content %>
+</body>
+</html>
+

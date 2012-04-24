@@ -1,0 +1,18 @@
+<% current_time = Time.now %>
+<% active_table_for :forum_table, @active_table_output,
+                    :refresh_url => url_for(:action => 'forum_table', :path => @forum_category.id),
+                    :style => 'width:100%' do |t| %>
+<tr <%= highlight_row 'forum',t.id %> >
+  <td align='left' nowrap='1'><%= entry_checkbox "forum", t.id %></td>
+  <td align='center'><%= t.image ? t.image.image_tag(:icon) : '' %></td>
+  <td><a href='<%= topics_list_url_for(t.id) %>'><%= t.name %></a></td>
+  <td><%= t.url %></td>
+  <td align='center'><%= t.forum_topics_count %></td>
+  <td align='center'><%= t.main_page ? 'yes' : 'no' %></td>
+  <td align='center'><%= t.weight %></td>
+  <td align='center'><%= t.updated_at ? t.updated_at.localize(Configuration.datetime_format) : '-' %></td>
+  <td align='center'><%= t.created_at ? t.created_at.localize(Configuration.datetime_format) : '-' %></td>
+</tr>
+
+
+<% end -%>

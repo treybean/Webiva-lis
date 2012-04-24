@@ -1,0 +1,17 @@
+<% active_table_for :messages_table, @tbl,
+   :more_actions => [['Delete', 'delete', 'Are you sure you want to delete these notifications?']] do |t| -%>
+  <% active_tr 'message', t.id do |tr| %>
+    <td><%= tr.checkbox %></td>
+    <td><%= link_to t.excerpt, url_for(:action => 'message', :path => t.id) %></td>
+    <td><%= h t.type_name %></td>
+    <td><%= t.view_type_display %></td>
+    <td align="center"><%= t.active? ? '<span style="color:green;">Yes</span>' : 'No' %></td>
+    <td align="center"><%= t.expired ? 'Yes' : 'No' %></td>
+    <td><%= t.starts_at ? t.starts_at.localize(DEFAULT_DATETIME_FORMAT) : '-' %></td>
+    <td><%= t.expires_at ? t.expires_at.localize(DEFAULT_DATETIME_FORMAT) : (t.expires_at.nil? && t.starts_at.nil? ? 'never'.t : '-') %></td>
+    <td><%= t.created_at ? t.created_at.localize(DEFAULT_DATETIME_FORMAT) : '-' %></td>
+    <td><%= t.end_user ? t.end_user.name : (t.everyone? ? '(Everyone)'.t : '') %></td>
+    <td><%= t.tags.collect(&:name).join(', ') %></td>
+  <% end -%>
+<% end -%>
+

@@ -1,0 +1,9 @@
+<div class='admin_content'>
+<% cms_form_for :credit_type,@credit_type, :html => {:class => 'admin_form' } do |f| -%>
+  <%= f.text_field :name %>
+  <%= f.text_field :standard_cost %>
+  <%= f.text_field :member_cost %>
+  <%= f.select :member_classes, UserClass.find_select_options(:all,:order => 'name').collect {|elm| [elm[0],elm[1].to_s] }, {}, :multiple => 4,:size=>5 %>
+  <%= f.submit_tag "Submit" %>
+<% end -%>
+</div>

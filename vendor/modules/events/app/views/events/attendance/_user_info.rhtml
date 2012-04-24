@@ -1,0 +1,13 @@
+<div style='margin:10px; border:1px solid #CCC; padding:10px;' class='user_info'>
+<%= @time.strftime(DEFAULT_DATETIME_FORMAT.t) %> - 
+<% if @user %>
+  <%= @user.name %> - <%= @user.email %><br/>
+  <% if @upcoming_event %>
+    Going to: <b><%= @upcoming_event.events_event.name %> at <%= @upcoming_event.events_event.start_time_display %></b>
+  <% else -%>
+    <b>No <%= @opts.events_name.downcase %> today</b>
+  <% end -%>
+<% else -%>
+  Invalid User
+<% end -%>
+</div>

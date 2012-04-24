@@ -1,0 +1,72 @@
+<script>
+  LessonEditor = {
+  
+    onUpdate: function(elm) {
+      new Ajax.Request('<%= url_for :action => "reorder", :path=> [ @mod.id ] %>/' + SCMS.getElemNum(elm.id), { parameters: Sortable.serialize(elm),  });
+    },
+    
+    removeLesson: function(lid) {
+      if(confirm("Permanently remove this lesson?")) {
+        
+        new Ajax.Request('<%= url_for :action => "remove_lesson", :path=> [ @mod.id ] %>', { parameters: { lesson_id: lid } });
+        Element.remove("lesson_" + lid);
+        LessonEditor.onChange();
+      }
+    },
+    
+    onSectionUpdate: function(sec) {
+      new Ajax.Request('<%= url_for :action => "reorder_sections", :path=> [ @mod.id ] %>', { parameters: Sortable.serialize(sec),  });
+    },
+    
+    removeSection: function(sid) {
+      if(confirm("Really remove this section and all the lessons in it (Hint: no)?")) {
+        
+        new Ajax.Request('<%= url_for :action => "remove_section", :path=> [ @mod.id ] %>', { parameters: { section_id: sid } });
+        Element.remove("section_" + sid);
+      }
+    }
+    
+  }
+
+</script>
+
+<% action_panel do |p| -%>
+  <%= p.link 'New Section', :action => 'section', :path => [ @mod.id ], :icon =>'add.gif' %>
+  <%= p.link 'Configure Module', :action => 'create', :path => [ @mod.id], :icon => 'configure.gif' %> 
+  
+<% end -%>
+
+<hr/>
+
+<div class='admin_content'>
+
+<div id='sections'>
+<% @sections.each do |section| -%>
+  <div class='section' id='section_<%= section.id %>'>
+    <span class='section_handle' id='section_handle_<%= section.id %>'><%= theme_image_tag 'icons/paragraph_move.gif' %></span> 
+    <a href='<%= url_for :action => 'edit', :path => [ @mod.id, section.id ] %>'><%= theme_image_tag 'icons/actions/add.gif' %></a>
+    <b><%= link_to section.name, :action => 'section' ,:path => [  @mod.id, section.id ] %></b>
+    <a href='javascript:void(0);' onclick='LessonEditor.removeSection(<%= section.id %>);'><%= theme_image_tag 'icons/actions/delete.gif',:align =>'absmiddle' %></a>
+    <div style='padding-left:20px;  height:auto !important; height:20px; min-height:20px; border:1px solid #CCCCCC;' id='section_lesson_<%= section.id %>'>
+      <% section.learning_lessons.each do |lesson| -%>
+        <div id='lesson_<%= lesson.id %>' style='padding:2px 10px;'>
+          <span class='handle' id='lesson_handle_<%= lesson.id %>'><%= theme_image_tag 'icons/paragraph_move.gif' %></span>
+          <%= link_to h(lesson.title), :action => 'edit', :path => [ @mod.id,  section.id, lesson.id ] %>
+        </div>
+      <% end -%>
+    </div>
+  </div>
+<% end -%>
+</div>
+
+
+
+  <script>
+    <% sections_containers = " [ " + @sections.map { |sec| "'section_lesson_#{sec.id}'" }.join(",")  + " ] " %>
+    <% @sections.each do |section| -%>
+      Sortable.create('section_lesson_<%= section.id %>', { tag: 'div', handle: 'handle', dropOnEmpty:true, onUpdate: LessonEditor.onUpdate, containment: <%= sections_containers  %>  });
+    <% end -%>
+    Sortable.create('sections', { tag: 'div', handle: 'section_handle', onUpdate: LessonEditor.onSectionUpdate  });
+  </script>
+
+

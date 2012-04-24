@@ -1,0 +1,66 @@
+<% cms_unstyled_fields_for :campaign, @campaign do |f| -%>
+  <% cms_unstyled_fields_for :segment, @segment  do |sf| -%>
+
+<h2 class="inform"><%= 'Targets'.t %></h2>
+
+<table class="display_table">
+<tr>
+<th width="265"><%= 'Select Target Type'.t %></th>
+<td class="spacer" rowspan="3"></td>
+<td class="separator" rowspan="3"></td>
+<td class="spacer" rowspan="3"></td>
+<th><%= 'Select Targets'.t %></th>
+<td class="spacer" rowspan="3"></td>
+<td class="separator" rowspan="3"></td>
+<td class="spacer" rowspan="3"></td>
+<th width="265"><%= 'Target Details'.t %></th>
+</tr>
+
+<tr>
+
+<td style="padding:10px;">
+<%= sf.radio_buttons :segment_type, @segment_types, :unstyled => true, :separator => '<br/>', :onchange => 'SegmentList.selectType(this.value);' -%>
+</td>
+
+<td>
+<% if @campaign.errors.invalid?(:market_segment_id) -%>
+  <span class='error'><%= @campaign.errors.on(:market_segment_id) %></span><br/>
+<% end -%>
+<%
+  segment_choices = @segments.collect() { |seg| [ seg.name,seg.id ] }
+  if @segment.segment_type == 'content_model'
+    segment_choices << ['<---Create a new segment--->', 'new']
+  end
+%>
+<%= f.select(:market_segment_id, segment_choices, {}, {:size => 12, :style => 'width:275px;', :onchange => 'SegmentList.selectSegment(this.value);'}) -%>
+</td>
+
+<td>
+  <div id='segment_info'>
+<%=
+if @campaign.market_segment && @campaign.market_segment.segment_type == @segment.segment_type
+  case @campaign.market_segment.segment_type
+  when 'user_segment'
+    render :partial => 'segment_user_segment_detail', :locals => { :market_segment => @campaign.market_segment }
+  when 'subscription'
+    render :partial => 'segment_subscription_detail', :locals => { :market_segment => @campaign.market_segment }
+  when 'content_model'
+    render :partial => 'segment_content_model_detail', :locals => { :market_segment => @campaign.market_segment }
+  else
+    render :partial => 'segment_everyone_detail', :locals => { :market_segment => @campaign.market_segment }
+  end
+end 
+-%>
+  </div>
+</td>
+</tr>
+
+<tr>
+<td class="base">&nbsp;</td>
+<td class="base">&nbsp;</td>
+<td class="base">&nbsp;</td>
+</tr>
+
+</table>
+<% end -%>
+<% end -%>

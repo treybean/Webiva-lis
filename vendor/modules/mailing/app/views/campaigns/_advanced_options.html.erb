@@ -1,0 +1,40 @@
+<style>
+.admin_form td.label_vertical { font-weight: normal; }
+</style>
+
+<% cms_subfields_for :campaign, @campaign do |f| -%>
+<table style="color:#444;">
+<tr class="vertical"><td colspan="2" style="padding-bottom:2px;"><h4><%= "From Email Addresses".t %></h4></td></tr>
+
+<tr><td colspan='2'><label>
+  <%= f.radio_button :from, 'default', :unstyled => true %>
+  <%= "#{Configuration.mailing_from} &lt;#{Configuration.from_email}&gt;" %>
+</label></td></tr>
+
+<tr><td colspan='2' style="padding-bottom:5px;">
+  <%= f.radio_button :from, 'custom', :unstyled => true %>
+  <%= f.text_field :from_name, :unstyled => true, :size => 10, :onkeypress => '$("campaign_from_custom").checked=true;' %>
+  &lt;<%= f.text_field :from_email, :unstyled => true, :size=> 10, :onkeypress=>'$("campaign_from_custom").checked=true;' %>@<%= Configuration.domain %>&gt;
+</td></tr>
+
+<tr class="vertical"><td colspan="2" style="padding-top:5px;"><h4><%=  "Reply To Email Address".t %> <span class="description"><%= '(Optional)'.t %></span></h4></td></tr>
+<tr><td colspan='2' style="padding-bottom:5px;">
+  <%= f.text_field :reply_to_name, :unstyled => true, :size => 10 %>
+  &lt;<%= f.text_field :reply_to_email, :unstyled => true, :size => 10 %>@<%= Configuration.domain %>&gt;
+</td></tr>
+
+<% if @campaign.sender_type == 'mailing/webiva_sender' || @campaign.sender_type == 'mailing/send_grid_sender' -%>
+<tr class="vertical"><td style="padding:5px 0 5px 0;" colspan="2"><h4><%= "Choose Your Tracking Options".t %></h4></td></tr>
+ <%= f.radio_buttons :tracking_image, [['Yes',true],['No',false]], :vertical => true, :label => 'Add a tracking image?', :description => '(Allows tracking of who opens and views the mailing)' %>
+ <%= f.radio_buttons :track_links, [['Yes',true],['No',false]], :vertical => true, :label => 'Track all links?', :description => '(Allows tracking of which links are clicked on)' %>
+ <%= f.radio_buttons :view_online, [['Yes',true],['No',false]], :vertical => true, :label => 'Let recipients view this message online?' %>
+<% end -%>
+
+<% if @campaign.sender_class.respond_to?('send_options') && @send_options -%>
+  <% cms_fields_for 'campaign_options', @send_options do |so| -%>
+    <%= render :partial => @campaign.sender_class.send_options_partial, :locals => { :f => so } %>
+  <% end -%>
+<% end -%>
+
+</table>
+<% end -%>

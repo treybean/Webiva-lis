@@ -1,0 +1,17 @@
+<script>
+  <%= active_table_javascript %>
+  
+</script>
+
+<% action_panel do |p| -%>
+  <%= p.link 'New Instructor', :action => 'edit', :icon => 'add.gif' %>
+  <%= p.link "Class Tracking", :action => 'tracking', :icon => 'view.gif' %>
+<% end -%>
+
+<hr/>
+
+<div class='admin_content'>
+  <div id='instructors_table'>
+    <%= render :partial => 'instructors_table' %>
+  </div>  
+</div>

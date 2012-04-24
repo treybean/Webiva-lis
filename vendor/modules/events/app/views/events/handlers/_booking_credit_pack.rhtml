@@ -1,0 +1,2 @@
+<%= f.select :events_credit_type_id, EventsCreditType.find_select_options(:all,:order => 'name') %>
+<%= f.text_field :credits, :description => 'Number of credits in this pack', :required => true %>

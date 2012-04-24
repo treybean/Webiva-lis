@@ -1,0 +1,19 @@
+<div class='admin_content'>
+<% cms_form_for :options, @options, :html => {:class => 'admin_form' } do |f| %>
+<%= f.text_field :booking_name, :description => 'Word to use instead of  "Booking"' %>
+<%= f.text_field :slot_name, :description => 'Word to use instead of "Slot"' %>
+<%= f.select :start_time, CalendarAvailability.time_select_options, :description => 'Time to start showing availablity each day' %>
+<%= f.select :end_time, CalendarAvailability.time_select_options, :description => 'Time to end showing availability each day' %>
+<%= f.text_field :block_minutes, :description => 'Minutes per block shown' %>
+<%= f.text_field :signup_minutes, :description => 'Minutes per signup block' %>
+<%= f.select :end_time, CalendarAvailability.time_select_options, :description => 'Time to end showing availability each day' %>
+<%= f.color_field :booking_color, :description => 'Block color of booking in the admin calendar' %>
+<%= f.color_field :event_color, :description => 'Block color for events in the admin calendar' %>
+<%= f.text_field :booking_ahead_hours, :description => 'Hours someone is allowed to book ahead for' %>
+<%= f.text_field :member_price %>
+<%= f.text_field :nonmember_price %>
+<%= f.select :member_classes, UserClass.find_select_options(:all,:order => 'name').collect {|elm| [elm[0],elm[1].to_s] }, {}, :multiple => 4,:size=>5 %>
+<%= f.submit_tag "Update Options" %>
+<% end -%>
+
+</div>

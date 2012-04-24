@@ -1,0 +1,71 @@
+<% if flash[:notice] %>
+      <div id='flash_notice' class='flash_notice'>
+        <%= flash[:notice] %>
+      </div>
+<% end -%>
+<script>
+  UserLearningModule = {
+    updateModule:function(act,module_id)  {
+    
+      new Ajax.Updater("tab_<%= @tab %>","<%= url_for :action => 'view', :tab => @tab , :path => [ @user.id ] %>", {
+                  parameters: { act: act, module_id: module_id }, evalScript: true });
+    
+    },
+    
+    
+    activateModule: function(module_id) {
+      if(confirm('Enable access to this learning module for this user?')) {
+        UserLearningModule.updateModule('activate',module_id);
+      }
+    },
+    
+    deactivateModule: function(module_id) {
+      if(confirm('Are you sure you want to deactivate this module for this user?')) {
+        UserLearningModule.updateModule('deactivate',module_id);
+      }
+    },
+    
+    resetModule: function(module_id) {
+      if(confirm('Are you sure you want to reset this learning module to the beginning for this user?')) {
+        UserLearningModule.updateModule('reset',module_id);
+      }
+    },
+  
+    advanceModule: function(module_id) {
+      if(confirm('Are you sure you want to advance this learning module to the next lesson?')) {
+        UserLearningModule.updateModule('advance',module_id);
+      }
+    }
+  }
+</script>
+
+<div class='admin_form'>
+  <% @learning_modules.each do |mod| -%>
+  <h2><%= mod.name %></h2>
+    <% if luser = @learning_users[mod.id] -%>
+    <div>
+        <% if luser.started? -%>
+          <%= @user.name %> is currently at Section: <%= luser.last_section_position %>, Lesson: <%= luser.last_lesson_position %>:<b><%= luser.last_lesson.title %> </b> (<%= link_to "See Details", :controller => '/learning/track', :action => 'user', :path => [ mod.id,luser.id ]  %>)
+        <%  else -%>
+          <%= @user.name %> has not yet started this module
+        <% end -%>
+        <br/><br/>
+    </div>
+    <div>
+      <% if luser.started? -%>
+          <button onclick='UserLearningModule.advanceModule(<%= mod.id %>);'>Advance Module</button>
+          <button onclick='UserLearningModule.resetModule(<%= mod.id %>);'>Reset Module</button>
+      <% end -%>
+        <button onclick='UserLearningModule.deactivateModule(<%= mod.id %>);'>Deactivate Module</button>
+    </div>
+    <% else -%>
+    <div>
+        <%= @user.name %> does not have this module enabled
+    </div>
+    <div>
+        <button onclick='UserLearningModule.activateModule(<%= mod.id %>);'>Activate Module</button>
+    </div>
+    <% end -%>
+  <% end -%>
+</div>
+

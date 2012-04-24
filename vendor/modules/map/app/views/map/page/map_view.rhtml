@@ -1,0 +1,32 @@
+<div class='cms_form'>
+ <% paragraph_options_form_for "Map Options",:map_view ,@options do |f| -%>
+  <% tabled_ajax_tabs ['Options','Icon'], 'Options' do |t| -%>
+    <% t.tabled_tab do  -%>
+      <%= f.text_field :width %>
+      <%= f.text_field :height  %>
+      <%= f.text_field :per_page %>
+      <%= f.radio_buttons :display_type, [['Use Page Connection','connection'],['Show Locations','locations'],['Use Content Model Zip Codes','content_model']], :separator => '<br/>', :label => 'Display' %>
+      <%= f.radio_buttons :show_map_types, [ ['Yes','yes'],['No','no']] %>
+      <%= f.radio_buttons :show_zoom, [ ['Full Controls','full'],['Small Controllers','small'],['No Controllers','off']], :separator => '<br/>' %>
+      <%= f.text_field :default_zoom, :description => 'Initial zoom level (1-17)' %>
+  <% if @options.display_type == 'content_model' -%>    
+      <%= f.select :content_model_id, @content_models %>
+      <%= f.select :content_model_field_id, @fields if @fields %>
+      <%= f.select :content_model_response_field_id, @text_fields if @text_fields %>
+  <% end -%>
+      <%= f.radio_buttons :show_all_locations, [ ['Yes',true],['No',false]] %>
+      <%= f.yes_no :center_via_google %>
+      <%= f.page_selector :detail_page_id %>
+    <% end -%>
+    <% t.tabled_tab do -%>
+      <%= f.filemanager_image :default_icon %>
+      <%= f.filemanager_image :shadow_icon %>
+      <%= f.text_field :icon_anchor_x %>
+      <%= f.text_field :icon_anchor_y %>
+      <%= f.text_field :info_anchor_x %>
+      <%= f.text_field :info_anchor_y %>
+    <% end -%>
+  <% end -%>
+<% end -%>
+</div>
+

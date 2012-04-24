@@ -1,0 +1,80 @@
+<script>
+var  EventsViewer = {
+
+  addUser: function() {
+    
+    if(!$('user_member_id').value) {
+      alert('Member must have a valid member account');
+      return;
+    }
+  
+    var params = { end_user_id: $('user_member_id').value, no_credit: $('user_no_credits').checked ? '1' : '0' };
+    $('user_member').disabled = true;
+    new Ajax.Updater('class_registration',  
+                      "<%= url_for :action => 'add_member', :path => [ @event.id ] %>",
+                      { parameters: params, evalScripts: true });
+  },
+  
+   cancelBooking: function(event_id,booking_id) {
+    if(confirm('Cancel this booking?')) {
+      var params = { cancel_booking_id: booking_id };
+      new Ajax.Updater('class_registration',  
+                      "<%= url_for :action => 'remove_member', :path => [ @event.id ] %>",
+                      { parameters: params, evalScripts: true });
+    }
+  
+  }
+}
+</script>
+
+<% action_panel do |p| -%>
+  <%= p.link 'Edit ' + @opts.event_name,:action => 'edit',:path => [ @event.id ], :icon =>'edit.gif' %>
+<% if @event.repeat? %>
+  <%= p.link 'Cancel ' + @opts.event_name,{:action => 'cancel',:path => [ @event.id ], :icon =>'delete.gif', :right => true, },:method => 'post', :confirm => jvh('Are you sure you want to cancel this ' + @opts.event_name.downcase + '? This will unlink it from all its children.')   %>
+  <%= p.link 'Cancel ' + @opts.event_name + ' and all children',{:action => 'cancel',:path => [ @event.id ], :icon =>'delete.gif', :right => true, :destroy => true },:method => 'post', :confirm => jvh('Are you sure you want to delete this ' + @opts.event_name.downcase + ' and all its children?')   %>
+<% else -%>
+  <%= p.link 'Cancel ' + @opts.event_name,{:action => 'cancel',:path => [ @event.id ], :icon =>'delete.gif', :right => true, },:method => 'post', :confirm => jvh('Are you sure you want to cancel this ' + @opts.event_name.downcase + '?')   %>
+<% end -%>
+<% end -%>
+
+<hr/>
+
+<div class='admin_content'>
+  <div style='float:left; width:520px;'>
+    <% if @event.image_file %><img src='<%= @event.image_file.url(:small) %>' align='left' style='padding:0 10px; 10px 0'/><% end -%>
+    <b><%= v(@event.name) %></b><br/>
+    <%= @event.event_on.strftime(DEFAULT_DATE_FORMAT.t) %> <%= @event.start_time_display %><% unless @event.by.blank? %>, with <%= @event.by %><% end -%><br/>
+    <%= @event.location %>
+    <div style='clear:both;'></div>
+          
+    <div style='width:500px; border:1px solid #CCCCCC; padding:5px; margin:5px;'>
+      <%= simple_format(@event.description) %>
+      <br/>
+      <%= @event.details %>
+    </div>
+  </div>
+  <div style='float:left; width:350px;'>
+    <div class='admin_form' id='class_registration' style='width:350px; padding:10px; border:1px solid #CCCCCC; margin-left:5px;' >
+      <%= render :partial => 'class_registration' %>
+    </div>
+    <br/>
+    <div>
+      <div class='admin_form' id='class_registration' style='width:350px; padding:10px; border:1px solid #CCCCCC; margin-left:5px;' >
+        <b>Other times for this class:</b><br/><br/>
+        <% @event.upcoming_siblings.each do |evt| -%>
+          <% if evt.id == @event.id %>
+            <b><%= "#{evt.event_on.strftime(DEFAULT_DATE_FORMAT.t)} - #{evt.start_time_display}" %></b><br/>
+          <% else -%>
+            <%= link_to "#{evt.event_on.strftime(DEFAULT_DATE_FORMAT.t)} - #{evt.start_time_display}", :action => 'view',:path => [ evt.id ] %> <br/>
+          <% end -%>
+        <% end -%>
+      </div>
+    </div>
+  </div>
+
+  <div style='clear:both;'></div>
+</div>
+
+<script>
+  Event.observe(window, 'load', function() { $('user_member').focus(); });
+</script>

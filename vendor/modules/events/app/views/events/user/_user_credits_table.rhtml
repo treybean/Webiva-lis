@@ -1,0 +1,13 @@
+<% active_table_for :calendar_user_credit_table, @tbl, :update => 'events_user_credits_table',
+            :refresh_url => url_for(:controller => '/events/user', :action => 'display_user_credits_table',
+                                    :path => @user.id)  do |t| -%>
+<tr <%= highlight_row 'user_credit',t.id %> >
+  <td align='right'><%= t.credit_difference %></td>
+  <td><%= h t.description %></td>
+  <td><%= t.created_at.strftime(DEFAULT_DATETIME_FORMAT.t) %></td>
+  <td><%= t.shop_order_id ? link_to("#" + t.shop_order_id.to_s,:controller => '/shop/manage',:action=>'order',:path => [t.shop_order_id]) : '-' %></td>
+  <td><%= h (t.admin_user ? t.admin_user.name : '-') %></td>
+</tr>
+
+<% end -%>
+

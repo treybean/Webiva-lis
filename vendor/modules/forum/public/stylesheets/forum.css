@@ -1,0 +1,200 @@
+
+.webiva_forum {
+  font-size: 12px;
+}
+
+.webiva_forum .category_name {
+  font-size: 2em;
+  font-weight: bold;
+  padding-bottom: 10px;
+}
+
+.webiva_forum .forum_name {
+  font-size: 1.2em;
+  font-weight: bold;
+  padding-bottom: 5px;
+}
+
+.webiva_forum .forum_description {
+  padding: 0 5px 5px 5px;
+}
+
+.webiva_forum .new_topic {
+  float: right;
+  padding-right: 10px;
+}
+
+.webiva_forum .forum_topics {
+  padding: 10px 0 10px 0;
+  clear: both;
+}
+
+.webiva_forum .forum_topics table {
+  width: 100%;
+}
+
+.webiva_forum .forum_topics table th {
+  font-size: 1.1em;
+  font-weight: bold;
+  text-align: left;
+}
+
+.webiva_forum .forum_topics table td {
+  text-align: left;
+}
+
+.webiva_forum .forum_topics table th.replies {
+  text-align: center;
+  width: 15%;
+}
+
+.webiva_forum .forum_topics table th.created {
+  width: 25%;
+}
+
+.webiva_forum .forum_topics table th.subject {
+  width: 60%;
+}
+
+.webiva_forum .forum_topics table td.replies {
+  text-align: center;
+}
+
+.webiva_forum .forum_topics table td.subject span {
+  font-size: 0.9em;
+}
+
+.webiva_forum .forum_topic .topic_subject {
+  font-size: 1.3em;
+  font-weight: bold;
+  padding: 5px 0 5px 0;
+}
+
+.webiva_forum .forum_topic .subscription {
+  padding-left: 10px;
+}
+
+.webiva_forum .forum_posts {
+  padding-top: 15px;
+}
+
+.webiva_forum .forum_posts .pages {
+  clear: both;
+}
+
+.webiva_forum .forum_posts .separator {
+  clear: both;
+  margin-bottom: 15px;
+  border: none;
+  border-top: 1px solid #000;
+}
+
+.webiva_forum .forum_post .attachment {
+  clear: both;
+  padding: 8px 0 0 80px;
+  font-weight: bold;
+}
+
+.webiva_forum .forum_post .attachment a {
+  font-weight: normal;
+}
+
+.webiva_forum .forum_post .actions {
+  clear: both;
+  padding: 4px 10px 0 10px;
+  text-align: right;
+}
+
+.webiva_forum .forum_post .actions .edited {
+  float: left;
+  color: #f00;
+  font-size: 0.9em;
+  padding-left: 80px;
+}
+
+.webiva_forum .forum_post .user_icon {
+  display: block;
+  float: left;
+  width: 80px;
+}
+
+.webiva_forum .forum_post .post_content {
+  display: block;
+  float: left;
+}
+
+.webiva_forum .forum_post .post_content .by, .webiva_forum .forum_post .post_content .date {
+  font-size: 0.9em;
+}
+
+.webiva_forum .forum_post .post_content .by {
+  font-weight: bold;
+}
+
+.webiva_forum .forum_post .body {
+  padding: 5px 5px 0 5px;
+  width: 420px;
+}
+
+.webiva_forum .forum_post .clear {
+  clear: both;
+  padding: 0;
+  margin: 0;
+  font-size: 0;
+  height: 0;
+}
+
+.webiva_forum fieldset {
+  padding-top: 10px;
+  margin: 0;
+  border: none;
+}
+
+.webiva_forum fieldset legend {
+  font-weight: bold;
+  font-size: 1.3em;
+  padding: 10px;
+}
+
+.webiva_forum fieldset ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.webiva_forum fieldset ul li {
+  margin: 0;
+  padding: 0 0 5px 0;
+}
+
+.webiva_forum fieldset label {
+  width: 100px;
+  display: block;
+  float: left;
+  text-align: right;
+  padding: 5px 5px 0 0;
+}
+
+.webiva_forum fieldset label.check_box {
+  display: inline;
+  float: none;
+  width: auto;
+}
+
+.webiva_forum fieldset textarea, .webiva_forum fieldset input.text_field {
+  width: 340px;
+}
+
+.webiva_forum fieldset textarea {
+  height: 150px;
+}
+
+.webiva_forum .new_topics_heading {
+  font-size: 1.3em;
+  font-weight: bold;
+  padding-bottom: 10px;
+}
+
+.webiva_forum .recent_topics .topic_subject {
+  padding-bottom: 5px;
+}

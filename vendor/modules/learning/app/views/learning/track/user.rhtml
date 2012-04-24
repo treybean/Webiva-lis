@@ -1,0 +1,33 @@
+<div class='admin_content'>
+
+<table width='100%'>
+<tr>
+  <td width='200' valign='top' style='padding-right:20px;'>
+    <div>
+    <% stat_view do |f| %>
+      <%= f.header "User Profile" %>
+      <%= f.raw 'Name',link_to(h(@user.name),:controller => '/members',:action => 'view', :path => [ @user.id ] ) %>
+      <%= f.row 'Username',@user.username unless @user.username.blank? %>
+      <%= f.row('Gender',@user.gender == 'm' ? 'Male'.t : 'Female'.t) if @user.gender %>
+      <%= f.raw 'Email',link_to(h(@user.email),'mailto:' + h(@user.email)) %>
+    <% end -%>
+    </div>
+  </td>
+  <td valign='top'>
+
+    <div id='user_lessons_table'>
+      <%= render :partial => 'user_lessons_table'  %>
+    </div>
+    
+    <% @graphs.each do |graph| -%>
+      <div>
+        <h4><%= graph[0] %></h4>
+        <%= graph[1] %>
+      </div>
+    <% end -%>
+  </td>
+</tr>
+</table>
+</div>
+
+

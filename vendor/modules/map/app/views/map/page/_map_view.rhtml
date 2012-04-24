@@ -1,0 +1,65 @@
+<script>
+<% if !in_editor %>
+  <%= render :partial => '/map/page/map_js' %>
+  
+  <% 
+    map_opts = { :element_name => "map_view_#{paragraph.id}",
+                  :map_types => options.show_map_types,
+                  :map_zoom => options.show_zoom }
+    if data.is_a?(Hash)
+      map_opts[:bounds] = data[:bounds] if data[:bounds] 
+      if data[:center]
+        map_opts[:lat] = data[:center][0]
+        map_opts[:lon]= data[:center][1]
+      end
+      map_opts[:zoom] = data[:zoom] ? data[:zoom].to_i :  (!options.default_zoom.blank? ? options.default_zoom.to_i : 17)
+      map_opts[:click] = true if data[:click]
+      map_opts[:callbackUrl] = detail_url.blank? ? url_for(data[:callback]) : detail_url
+      if icon =  DomainFile.find_by_id(options.default_icon)
+        map_opts[:icon] = { :url => icon.url, :width => icon.width, :height => icon.height, 
+                              :icon_anchor_x => options.icon_anchor_x, :icon_anchor_y => options.icon_anchor_y,
+                              :info_anchor_x => options.info_anchor_x, :info_anchor_y => options.info_anchor_y
+                           }
+        if shadow = DomainFile.find_by_id(options.shadow_icon)
+          map_opts[:icon].merge!({:shadow_url => shadow.url, :shadow_width => shadow.width, :shadow_height => shadow.height })
+        end    
+      end
+      map_opts[:autolocate] = options.center_via_google
+    end
+   -%>
+
+   var map_opts = <%= map_opts.to_json %>;
+
+   <% if !searching %>
+   if(map_opts.autolocate && typeof google.loader != 'undefined') {
+     var cloc = google.loader.ClientLocation;
+     if (cloc  != null) { 
+       if(cloc.latitude && cloc.longitude) {
+         map_opts.bounds = null;
+         map_opts.lat  = cloc.latitude;
+         map_opts.lon = cloc.longitude;
+       }
+     }
+   }
+ <% end -%>
+   MapEngine.initialize(map_opts) 
+                
+<% if data.is_a?(Hash) && data[:markers] && data[:markers].length > 0 -%> 
+  MapEngine.data = [
+    
+    <% if options.display_type == 'locations' -%>
+      <% data[:markers].each do |loc| -%>
+          [ <%= loc.lat %>,<%= loc.lon %>,"<%= jh loc.name  %>",<%= loc.id %>,
+            <%= loc.map_options.to_json %> ],
+      <% end -%>
+    <% else -%>
+        <% data[:markers].each do |marker| -%>
+          [ <%= marker[:lat] %>,<%= marker[:lon] %>, <%= marker[:title] ? "'#{jh(marker[:title])}'" : "null" %>,<%= marker[:ident]  ? "'#{jh(marker[:ident])}'" : "null" %>,{} ],
+        <% end -%>
+    <% end -%>
+    []
+  ];
+<% end -%>
+</script>
+<%= feature_output %>
+<% end -%>

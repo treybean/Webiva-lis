@@ -1,0 +1,41 @@
+<div id='edit_booking' class='cms_form' style='width:<%= @area_width %>px; height:<%= @area_height + 100 %>px; padding:10px; overflow:auto;'>
+<h1 class='blue'><%= @booking.id ? "Edit Booking" : "Add Booking" %></h1>
+<% remote_cms_form_for :booking, @booking, :html => {:class => 'admin_form'},:update => 'RB_window', :url => { :action => 'edit_booking' } do |f| -%>
+<%= f.header 'Please select a site user or enter a recipient name' %>
+<%= f.end_user_selector :recipient_name, :description => 'Who this booking is for',:label => 'Booking for', :id_field => 'end_user_id', :noun => 'User' %>
+<% if @booking.end_user %>
+  <% f.custom_field 'View User' do -%>
+    <%= link_to "See %s's Account" / @booking.end_user.first_name.to_s, :controller => '/members', :action => 'view', :path => [ @booking.end_user_id ] %>
+  <% end -%>
+<% end -%>
+<%= f.text_field :description, :description => 'Optional Description',:label => 'Description' %>
+
+<%= f.header 'Booking Details' %>
+<%= f.select :calendar_slot_id, @slots, :label => 'With' %>
+<%= f.date_field :booking_on, :noun => 'Booking Date and time' %>
+<%= f.select :start_time, CalendarAvailability.time_select_options %>
+<%= f.select :duration, CalendarBooking.duration_select_options %>
+<%= f.check_boxes :verify_availability, [ ['Verify Availability','verify' ] ] , :label => '', :description => 'Make sure there is availability at this time' %>
+<% unless @booking.id %>
+<%= f.radio_buttons :apply_credits, [['Verify Credits','verify'],['Apply Credits','apply'],['Don\'t Use Credits','off']],:separator => " ",:description => 'Whether or not to apply booking credits to this Booking. Verify will make sure the user has the required credits. Apply will apply a credit (may result in a negative balance).' %>
+<% end -%>
+<% if @show_day_on_cancel %><input type='hidden' name='show_day_on_cancel' value='1' /><% end -%>
+
+<% if @booking.id %>
+  <tr>
+    <td colspan='2'>&nbsp;</td>
+  <tr>
+    <td align='left'>
+       <input class="submit_button" name="submit_form" value="Cancel Booking" onclick='CalEditor.cancelBooking(<%= @booking.id %>, "<%= (@booking.booking_on || Time.now).strftime("%Y-%m-%d") %>"); return false;' type="submit"/>
+    </td>
+    <td align='right'>
+      <input class="submit_button" name="submit_form" value="Submit" type="submit"/>&nbsp;&nbsp;<input class="cancel_button" name="cancel_form" onclick="<%= "CalEditor.showDay('#{(@booking.booking_on || Time.now()).strftime("%Y-%m-%d")}'); return false;" %>" value="Cancel" type="submit"/>
+    </td>
+<% else -%>
+  <%= f.submit_cancel_tags 'Submit','Cancel',{},{:onclick => @show_day_on_cancel ? "CalEditor.showDay('#{(@booking.booking_on || Time.now()).strftime("%Y-%m-%d")}'); return false;" : 'CalEditor.close();' } %>
+<% end -%>
+<% end -%>
+<script>
+  $('booking_recipient_name').focus();
+</script>
+</div>

@@ -1,0 +1,64 @@
+<%= feature_output %>
+<div class='cms_form checkout checkout_login'>
+<h2>Please login or register to continue the checkout</h2>
+<table>
+<% cms_unstyled_form_for :login,login, :url => '' do |f| %>
+  <tr>
+    <td colspan='2' class='label'>Existing users login here:</td>
+  </tr>
+<% if invalid_login %>
+  <tr>
+    <td colspan='2'>
+    <b>Invalid email or password - Please verify your login credentials<br/></b>
+    </td>
+  </tr> 
+<% end -%>
+  <tr>
+    <td class='field'>Email <%= f.text_field :email, :vertical => true, :size => 20, :class => 'textfield' %></td>
+    <td class='field'>Password   <%= f.password_field :password, :vertical => true, :size => 20, :class => 'textfield' %> </td>
+  </tr>
+  <tr>
+    <td colspan='2' align='right'>
+      <%= f.submit_tag 'Login', :class => 'submittag' %>
+    </td>
+  </tr>
+<% end -%>
+  <tr>
+    <td colspan='2'>
+      <hr/>
+    </td>
+  </tr>
+<% cms_form_for :register,user, :url => '' do |f| %>
+  <% if user.errors.length > 0 %>
+  <tr>
+    <td colspan='2' class='errors'>
+      <b>We encountered the following problems with your registration:</b><br/>
+      <% user.errors.each do |err| -%>
+        <% err[1].each do |desc| -%>
+          <% unless desc.blank? -%>
+            <%= err[0].humanize %> <%= desc %><br/>
+          <% end -%>
+        <% end -%>
+     <% end -%>
+    </div>
+  </tr>
+  <% end -%>
+  <tr>
+    <td colspan='2' class='label'>
+      No account? Please use the form below:
+    </td>
+  </tr>
+  <%= f.text_field :first_name, :vertical => true, :required => true, :size => 30, :class => 'textfield' %>
+  <%= f.text_field :last_name, :vertical => true, :required => true, :size => 30, :class => 'textfield' %>
+  <%= f.text_field :email, :vertical => true, :required => true, :size => 50, :class => 'textfield' %></td>
+  <%= f.header "Create an account by entering a password (optional)" %>
+  <%= f.password_field :password, :vertical => true, :size => 30, :class => 'textfield' %>
+  <%= f.password_field :password_confirmation, :vertical => true, :label => 'Confirm', :size => 30, :class => 'textfield'%>
+  </tr>
+    <td colspan='2' align='right'>
+      <%= f.submit_tag 'Continue', :class => 'submittag' %>
+    </td>
+  </tr>
+<% end -%>  
+</table>
+</div>

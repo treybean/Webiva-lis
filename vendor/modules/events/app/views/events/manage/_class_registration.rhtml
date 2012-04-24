@@ -1,0 +1,24 @@
+<% if @result %>
+<div class='error'><%= @member.name + " has " if @member %><%= @result %> 
+<% if @member %>
+  (<%= link_to "See Account".t,:controller => '/members',:action => 'view',:path => [ @member.id ] %>)
+<% end -%>
+</div>
+<% end -%>
+Register a member with this class:<br/>
+Class Occupency: <%= @event.event_bookings %>/<%= @event.event_spaces %>
+<form action='' method='post' onsubmit='EventsViewer.addUser(); return false;'>
+<% cms_unstyled_fields_for :user, (!@cancel && @member && @result) ? DefaultsHashObject.new(:member => @member.name, :member_id => @member.id) : nil do |f| -%>
+  <%= f.end_user_selector :member %><button onclick='EventsViewer.addUser(<%= @event.id %>); return false;'>Add</button>
+  <label for='user_no_credits'><%= f.check_box :no_credits %> Do not verify or apply credits</label>
+<% end -%>
+<% @event.confirmed_bookings.each do |booking| -%>
+<div><%= booking.end_user.name if booking.end_user %> (<%= link_to "See Account".t,:controller => '/members',:action => 'view',:path => [ booking.end_user_id ] %> | <a href='javascript:void(0);' onclick='EventsViewer.cancelBooking(<%= @event.id %>,<%= booking.id %>);'>Cancel Booking</a>) </div>
+<% end -%>
+</form>
+
+<script>
+setTimeout(function() {
+$('user_member').focus(); 
+},200);
+</script>

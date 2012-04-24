@@ -1,0 +1,42 @@
+<script>
+<%= active_table_javascript %>
+
+
+SubregionEditor = {
+  create: function(frm) {
+    var values = Form.serialize(frm);
+    this.update(values);
+    return false;
+  },
+
+
+  update: function(params) {
+
+    ActiveTable.refresh("subregions_table","<%= url_for :action => 'display_subregions_table', :path => @region.id  %>",'subregions_table',params);
+  },
+
+}
+</script>
+
+<div class='admin_content'>
+<ul class='action_panel'>
+  <li>
+    <% cms_unstyled_form_for :subregion_create, @subregion, :html => { :onsubmit => "return SubregionEditor.create(this);", :class => 'admin_form' } do |f| %>
+      <%= "Name".t %> <%= f.text_field :name, :size => 20 %>
+      <%= "Abbreviation:".t %><%= f.text_field :abr, :size => 10 %> 
+      <%= "Custom Tax Rate:".t %><%= f.text_field :tax, :size => 4 %>%
+      <input type='submit' value='<%= vh "Create Subregion".t %>'/> <br/>
+      <%= "Tax On:".t %><%= f.radio_buttons :tax_calc, Shop::ShopSubregion.tax_calc_select_options %> 
+      
+    </form> </li>
+     <% end -%>
+</ul>
+
+</div>
+<hr/>
+<div class='admin_content'>
+<div id='subregions_table'>
+  <%= render :partial => 'subregions_table' %>
+</div>
+</div>
+

@@ -1,0 +1,22 @@
+   
+
+.calendar_day {
+  width:110px; 
+  height:90px;
+  padding:0px; 
+  margin:0px;
+  left:-2px;
+  top:-2px;
+  position:relative;
+  overflow:hidden;
+}
+
+
+.calendar_day_text {
+  position: absolute;
+  top:4px;
+  left:6px;
+  z-index:10;
+}
+
+

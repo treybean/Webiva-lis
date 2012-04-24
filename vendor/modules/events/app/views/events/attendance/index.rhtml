@@ -1,0 +1,47 @@
+<script>
+
+EventViewer = {
+  submit: function() {
+    var params = Form.serialize('check_form');
+    $('member_id').value = '';
+    new Ajax.Request('<%= url_for :action => "check_user" %>',{ parameters: params });
+  
+  },
+  
+  startTimer: function() {
+    $('member_id').focus();
+    //setTimeout(EventViewer.startTimer,500);
+  
+  },
+  
+  clearOldEntries: function() {
+    var elems = $('attendance_list').select(".user_info");
+    for(var i =5;i < elems.length;i++) {
+      $(elems[i]).remove();
+    }
+  }
+
+}
+
+</script>
+
+
+<div class='admin_content'>
+
+<form action='' method='post' id='check_form' name='check_form' onsubmit='EventViewer.submit(); return false;' class='admin_form'>
+<span class='text_field_control'><input type='text' size='40' id='member_id' name='member_id' value=''/></span><input class='submit_button' type='submit' value='Check'/>
+</form>
+</div>
+
+<hr/>
+
+<div class='admin_content'>
+<div id='attendance_list' style='width:400px;'>
+
+</div>
+</div>
+
+
+<script>
+  Event.observe(window, 'keydown', function() { EventViewer.startTimer(); });
+</script>

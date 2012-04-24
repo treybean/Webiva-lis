@@ -1,0 +1,12 @@
+<% active_table_for :user_messages_table, @tbl,
+   :refresh_url => url_for(:action => 'display_user_messages_table', :path => [@user.id], :tab => @tab) do |t| -%>
+  <% active_tr 'message', t.id do |tr| %>
+    <td><%= tr.checkbox %></td>
+    <td><%= link_to t.excerpt, url_for(:controller => '/notification/manage', :action => 'message', :path => t.id) %></td>
+    <td align="center"><%= @seen_msgs[t.id] ? '<span style="color:green;">Yes</span>' : 'No' %></td>
+    <td align="center"><%= t.active? ? 'Yes' : 'No' %></td>
+    <td align="center"><%= t.expired ? 'Yes' : 'No' %></td>
+    <td><%= t.created_at ? t.created_at.localize(DEFAULT_DATETIME_FORMAT) : '-' %></td>
+  <% end -%>
+<% end -%>
+

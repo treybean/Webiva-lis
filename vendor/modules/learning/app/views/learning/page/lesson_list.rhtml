@@ -1,0 +1,5 @@
+<div class='cms_form'>
+<%  paragraph_options_form_for :lesson_list do |f| -%>
+  <%= f.select :learning_module_id, LearningModule.select_options %>
+<% end -%>
+</div>

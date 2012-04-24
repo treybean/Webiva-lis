@@ -1,0 +1,32 @@
+
+<div id='calendar'>
+
+<div id='calendar_sessions'>
+  <b>Show Sessions</b>  | <a href='javascript:void(0);' onclick='SCMS.showHide("calendar_credits","calendar_sessions");' class='ajax_link'>  Show Credits</a><br/><br/>
+
+<b>Current Credits: <%= @calendar_user.credits %></b><br/><br/>
+
+
+<div id='user_booking_table'>
+  <%= render :partial => 'calendar_user_booking_table' %>
+</div>
+
+  
+</div>
+
+<div id='calendar_credits' style='display:none;'>
+<a href='javascript:void(0);' onclick='SCMS.showHide("calendar_sessions","calendar_credits");' class='ajax_link'>Show Sesssions</a> | <b>Show Credits</b><br/>
+
+<div style='padding:20px;' class='admin_form text_field_control'>
+<b>Current Credits: <%= @calendar_user.credits %></b><br/><br/>
+<% remote_cms_unstyled_form_for  :credit, @user_credit, :url => { :action => 'booking_credits', :tab => @tab }, :update => "tab_#{@tab}", :html => { :class => 'admin_form' } do |f| -%>
+Add Credit Adjustment: <%= f.text_field :credit_difference, :size => 10 %> Reason: <%= f.text_field :description %> <%= f.submit_tag 'Submit' %>
+<% end -%>
+</div>
+
+<div id='calendar_user_credits_table'>
+  <%= render :partial => 'calendar_user_credits_table' %>
+</div>
+
+
+</div>

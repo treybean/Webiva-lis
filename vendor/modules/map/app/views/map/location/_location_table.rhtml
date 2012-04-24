@@ -1,0 +1,13 @@
+<% active_table_for :location_table, @tbl,
+    :actions => [ ['Delete','delete','Are you sure you want to delete the selected locations?']]  do |t| %>
+<tr <%= highlight_row 'location', t.id %>>
+ <td><%= entry_checkbox 'location', t.id %></td>
+ <td><%= link_to h(t.name), :action => 'edit', :path => t.id %></td>
+ <td><%= h t.city %></td>
+ <td><%= h t.state %></td>
+ <td><%= h t.zip %></td>
+ <td><%= h t.contact_name %></td>
+ <td><%= t.active? ? 'Yes' : 'No' %></td>
+ <td><%= t.lon.blank? ? 'No' : 'Yes' %></td>
+</tr>
+<% end -%>

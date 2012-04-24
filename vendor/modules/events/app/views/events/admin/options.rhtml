@@ -1,0 +1,14 @@
+<div class='admin_content'>
+
+<% cms_form_for :options, @options, :html => {:class =>'admin_form' } do |f| -%>
+
+<%= f.text_field :event_name %>
+<%= f.text_field :events_name %>
+<%= f.text_field :subtitle_name %>
+<%= f.text_field :instructor_name %>
+<%= f.text_field :automatic_credit %>
+<%= f.submit_tag 'Save' %>
+
+<% end -%>
+
+</div>

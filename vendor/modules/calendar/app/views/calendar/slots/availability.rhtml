@@ -1,0 +1,13 @@
+<div class='admin_content'>
+<% cms_form_for :availability,@availability, :html => {:class => 'admin_form' } do |f| -%>
+<input type='hidden' name='main' value='<%= @main_calendar %>'/>
+<%= f.select :calendar_slot_id, @slots, :label => 'Calendar Slot' %>
+<%= f.radio_buttons :availability_type, CalendarAvailability.availability_type_select_options, :label => 'Available', :required => true %>
+<%= f.date_field :start_on, :required => true %>
+<%= f.date_field :end_on, :blank => true %>
+<%= f.select :start_time, CalendarAvailability.time_select_options %>
+<%= f.select :end_time, CalendarAvailability.time_select_options %>
+<%= f.submit_tag @availability.id ? 'Edit' : 'Add' %>
+<% end -%>
+
+</div>

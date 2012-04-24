@@ -1,0 +1,13 @@
+<div class='cms_form'>
+  <% paragraph_options_form_for "Booking Options",:booking ,@options do |f| -%>
+    <%= f.page_selector :calendar_page_id, :description => 'Calendar page to continue booking at', :vertical => true %>
+    <%= f.page_selector :checkout_page_id, :description => 'Checkout page', :vertical => true %>
+    <%= f.select :booking_credit_product_id, [[ '--Select Credit Pack Product--',nil]] +  @products, :description => 'Buy more', :vertical => true %>
+    <%= f.text_field :booking_minutes, :description => 'Booking Length in minutes', :vertical => true %>
+    <%= f.select :slot_id, @slots, :description => 'Which slots to book into', :vertical => true, :label => 'Slot or Slot Group to book into', :noun => 'Slot' %>
+    <%= f.text_field :minutes_hold_time, :description => 'Minutes to hold each booking until it is confirmed', :vertical => true %>
+    <%= f.text_field :maximum_unconfirmed_sessions, :description => 'Maximum number of unconfirmed sessions a user can have', :vertical => true %>
+    <%= f.radio_buttons :auto_book, [['Yes',true],['No',false]], :description => 'Automatically book if user has credits', :vertical => true %>
+    <%= f.page_selector :auto_book_page_id, :description => 'Page to redirect user to after booking', :vertical => true %>    
+  <% end -%>
+</div>

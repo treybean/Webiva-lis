@@ -1,0 +1,18 @@
+<div style='padding:5px 10px; text-align:left;'>
+<div style='overflow:hidden; max-width:350px; width:auto !important; width:350px; '>
+<%= h(truncate(@response.send(@resp_field.field),200)) %>
+</div>
+<div style='text-align:right;'><%= "#{h(@response.first_name)}" %></div>
+
+<% if @count > 1 %>
+<div style='text-align:center; padding-top:10px; white-space:nowrap;'>
+  <% if @page > 0 %>
+    <a href='javascript:void(0);' onclick='MapEngine.updateInfoWindow({ page: <%= @page-1 %>});' >&lt; &lt; Last</a> |
+  <% end -%>
+    Response <%= @page+1 %> of <%= @count %>
+  <% if @page < @count-1 %>
+   | <a href='javascript:void(0);' onclick='MapEngine.updateInfoWindow({ page: <%= @page+1 %>});' >Next &gt;&gt;</a> 
+  <% end -%>
+</div>
+<% end -%>
+</div>  

@@ -1,0 +1,10 @@
+<% active_table_for :user_table, @active_table_output,
+                    :refresh_url => url_for(:action => 'user_table'),
+                    :style => 'width:100%' do |t| %>
+<tr <%= highlight_row 'user',t.id %> >
+  <td><%= link_to t.end_user.name, :action => 'transactions', :path => t.id %></td>
+  <td align="center"><%= t.rewards %></td>
+  <td align="center"><%= t.created_at ? t.created_at.strftime(DEFAULT_DATETIME_FORMAT.t) : '-' %></td>
+  <td align="center"><%= t.updated_at ? t.updated_at.strftime(DEFAULT_DATETIME_FORMAT.t) : '-' %></td>
+</tr>
+<% end -%>

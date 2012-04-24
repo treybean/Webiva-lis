@@ -1,0 +1,20 @@
+<% active_table_for :slots_table, @active_table_output,
+                    :actions => [ [ 'Delete', 'delete', 'Are you sure you want to permanently delete the selected slot?' ] ] do |t| %>
+<tr <%= highlight_row 'slot',t.id %> >
+  <td align='left' nowrap='1'><%= entry_checkbox "slot", t.id %></td>
+  <td><span style='width:12px; <%= "background-color: #{vh t.color};" unless t.color.blank? %>'><img src='/images/spacer.gif' height='16' width='12' /></span> <%= link_to h(t.name), :action => 'edit', :path => t %></td>
+  <td valign='center'><% if t.calendar_slot_group %>
+        <span style='width:12px; <%= "background-color: #{vh t.calendar_slot_group.color};" unless t.calendar_slot_group.color.blank? %>'><img src='/images/spacer.gif' height='16' width='12' /></span>
+        <%= t.calendar_slot_group ? t.calendar_slot_group.name : '-' %>
+      <% end -%>
+  </td>
+  <td><%= link_to "Edit Availability".t, :action => 'availabilities', :path => t %></td>
+  <td>
+    <% if t.slot_hash %>
+    <a href='webcal://<%= Configuration.domain +  url_for(:controller => '/calendar/page',:action=>'ical',:path => [t.slot_hash]) %>'>webcal://<%= Configuration.domain + url_for(:controller => '/calendar/page',:action=>'ical',:path => [t.slot_hash]) %></a>
+    <% end -%>
+    </td>
+</tr>
+
+
+<% end -%>

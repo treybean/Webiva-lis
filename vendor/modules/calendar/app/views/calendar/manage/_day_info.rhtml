@@ -1,0 +1,37 @@
+<table  cellspacing='0' cellpadding='0' style='margin:2px;'>
+<% @first_slots = {} %>
+<% @spaces[:blocks].each_with_index do |spc,idx| -%>
+<tr <%= highlight_row 'entry',idx %>>
+  <td nowrap='1' style='height:<%= @block_height.to_i %>px; width:130px; padding-left:4px; color:#444444; border-bottom:1px solid #EEEEEE;'> <%= "#{Calendar::Utility.time_str(spc[0])} - #{Calendar::Utility.time_str(spc[1])}" %></td>
+  <% @slot_ids.each do |slt| 
+    slot = @spaces[:slots][slt][idx]
+    next_slot = @spaces[:slots][slt][idx+1] 
+    prev_slot = @spaces[:slots][slt][idx-1] 
+    -%>
+    <td >
+      <% if slot[2] %>
+        <% # Clean this the fuck up asshole 
+        %>
+        <div style='cursor:pointer; border-left:1px solid #FFFFFF; border-right: 1px solid #FFFFFF; <%= "border-top: 1px solid #FFFFFF;" if compare_booking(slot,prev_slot) %>  <%= "border-bottom: 1px solid #FFFFFF;" if compare_booking(slot,next_slot) %> display:block; <%= "background-color:#{slot[3] ? slot[2].calendar_slot.color : slot[2].get_color };" if slot[2] %> <%= "width:#{@block_width}px;height:#{@block_height.to_i + (compare_booking(slot,prev_slot) ? 0 : 1) + (compare_booking(slot,next_slot) ? 0 : 1)}px" %>; overflow:hidden; font-size:10px; color:#444444; text-align:center;' 
+          
+          onclick='<% if !slot[3] && slot[2].is_a?(CalendarBooking) %> <%= "CalEditor.editBooking(#{slot[2].id});" %><% elsif !slot[3] && slot[2].is_a?(CalendarHoliday) && !slot[2].id.blank? -%> <%= "CalEditor.editHoliday(#{slot[2].id});" %> <% else -%><%= "CalEditor.addBooking(\"#{@date_link}\",#{slot[2].id},#{slot[0]},#{slot[1]});" if slot[3] %><% end -%>'    <% if slot[3] %> onmouseover='this.style.backgroundColor = "#CCCCCC";' onmouseout='this.style.backgroundColor = "<%= slot[3] ? slot[2].calendar_slot.color : slot[2].get_color %>";'  <% end -%>
+      <%=  "title='#{vh slot[2].get_description(slot[0],slot[1])}'" if slot[2] %> >
+        <% if !slot[3] && slot[2] %>
+          <% if compare_booking(slot,prev_slot) %>
+            <%= slot[2].recipient_name  %>
+          <% end -%>
+        <% elsif !@first_slots[slt] -%>
+          <% @first_slots[slt] = true;  %>
+          <%= slot[2].calendar_slot.name %>
+        <% end -%>
+      </div>
+      <% else -%>
+      <div style='border:1px solid #FFFFFF; display:block; <%= "width:#{@block_width}px;height:#{@block_height.to_i}px" %>' ></div>
+      <% end -%>
+    </td>
+  <% end -%>
+</tr>
+<% end -%>
+
+</table>
+

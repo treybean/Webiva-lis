@@ -1,0 +1,67 @@
+<script>
+var EventsViewer = {
+  currentOffset: <%= @offset.to_i %>,
+
+  showEventBooking: function(event_id) {
+    SCMS.remoteOverlay("<%= url_for(:action => 'event_booking') %>",{ event_id: event_id });
+  },
+  
+  
+   addUser: function(event_id) {
+    
+    var params;
+    
+    if(!$('user_member_id').value) {
+      params = {    member_id: $('user_member').value, no_credit: $('user_no_credits').checked ? '1' : '0' };
+    }
+    else {
+      params = { end_user_id: $('user_member_id').value, no_credit: $('user_no_credits').checked ? '1' : '0' };
+    }
+  
+    $('user_member').disabled = true;
+    
+    new Ajax.Updater('class_registration',  
+                      "<%= url_for :action => 'add_member' %>/" + event_id,
+                      { parameters: params, evalScripts: true });
+  },
+  
+  refreshCalendar: function(week_offset) {
+    if(week_offset)
+      this.currentOffset += week_offset
+    var params = { offset: this.currentOffset };
+    new Ajax.Updater('event_calendar',"<%= url_for :action => 'event_calendar'%>",{ parameters: params });
+  },
+  
+  highlightBox: function() {
+    if($('user_member')) {
+      $('user_member').focus();
+    }
+  },
+  
+  cancelBooking: function(event_id,booking_id) {
+    if(confirm('Cancel this booking?')) {
+      SCMS.remoteOverlay("<%= url_for(:action => 'event_booking') %>", { event_id: event_id, cancel_booking_id: booking_id });
+    }
+  
+  }
+}
+</script>
+
+<% action_panel do |p| -%>
+  <%= p.link 'Add ' + @opts.event_name, :icon => 'add.gif', :action => 'edit' %>
+  <%= 
+      #p.link 'Show Repeating ' + @opts.events_name, :icon => 'edit.gif', :action => 'recurring' 
+  %>
+  <%= p.link @opts.instructor_name.pluralize, :icon => 'view.gif', :controller => '/events/instructor' %>
+  <%= p.link 'Configure ' + @opts.events_name, :icon => 'configure.gif', :action => 'configure' if myself.has_role?('events_admin') %>
+<% end -%>
+
+<hr/>
+
+<div id='event_calendar'>
+  <%= render :partial => 'event_calendar'%>
+</div>
+
+<script>
+  Event.observe(window, 'keydown', function() { EventsViewer.highlightBox(); });
+</script>

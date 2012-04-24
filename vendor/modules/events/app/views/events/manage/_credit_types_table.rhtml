@@ -1,0 +1,6 @@
+<% active_table_for :credit_types_table, @tbl, :actions => [['Delete','delete','Delete the selected credit types?']] do |t| -%>
+<tr <%= highlight_row 'credit_type',t.id %>>
+  <td><%= entry_checkbox 'credit_type',t.id %></td>
+  <td><%= link_to v(t.name),:action => 'credit_type',:path => [t.id ] %></td>
+</tr>
+<% end -%>

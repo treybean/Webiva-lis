@@ -1,0 +1,22 @@
+<script>
+<%=  active_table_javascript %>
+</script>
+
+<% action_panel :more => true do |p| -%>
+  <%= p.link "Create a new Forum", :action => 'forum', :path => @forum_category.id, :icon => 'add.gif' %>
+<% end -%>
+
+<% more_action_panel do |p| -%>
+  <%= p.link "Configure Forum Category", :controller => '/forum/admin', :action => 'category', :path => @forum_category.id, :icon => 'configure.gif' %>
+  <%= p.link "Delete Forum Category", :controller => '/forum/admin', :action => 'delete', :path => @forum_category.id, :icon =>'delete.gif' %>
+<% end -%>
+
+
+<hr/>
+
+
+<div class='admin_content'>
+<div id='forum_table'>
+<%= render :partial => 'forum_table' %>
+</div>
+</div>

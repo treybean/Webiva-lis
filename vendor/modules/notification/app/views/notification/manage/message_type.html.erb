@@ -1,0 +1,11 @@
+<div class='admin_content'>
+<% admin_form_for :type, @type do |f| -%>
+  <% if @type.id -%>
+    <%= f.text_field :name, :required => true %>
+  <% end -%>
+  <%= f.select :content_model_id, ContentModel.select_options_with_nil, :required => true %>
+  <%= f.yes_no :default %>
+  <%= f.spacer %>
+  <%= f.submit_tag @type.id ? 'Save' : 'Create' %>
+<% end -%>
+</div>

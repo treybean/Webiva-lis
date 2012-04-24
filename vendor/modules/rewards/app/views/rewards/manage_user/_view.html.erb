@@ -1,0 +1,29 @@
+<script>
+RewardsData = {
+  viewTransactions: function() {
+    $j('#tab_<%= @tab %>').load("<%= url_for :action => 'view', :path => [@user.id], :tab => @tab %>");
+  }
+}
+</script>
+
+<div style="padding-bottom:5px;">
+<%= 'User has %d rewards' / @rewards_user.rewards %>
+</div>
+
+<% ajax_tabs ['Transactions', ['Credit / Debit', jvh("$j('#transaction').load('#{url_for(:action => 'transaction', :path => @user.id, :tab => @tab)}')")]], 'Transactions' do |t| -%>
+
+<% t.tab do -%>
+
+<div class='admin_content'>
+<div id='transaction_table'>
+<%= render :partial => 'transaction_table' %>
+</div>
+</div>
+<% end -%>
+
+<% t.tab do -%>
+<div id="transaction">
+</div>
+<% end -%>
+
+<% end -%>

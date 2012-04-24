@@ -1,0 +1,12 @@
+<% admin_form_for :transaction, @transaction, :html => {'j-action' => 'submitform', 'submitform' => url_for(:action => 'transaction')} do |f| -%>
+  <%= hidden_field_tag :tab, @tab %>
+  <%= f.select :transaction_type, [['--Select transaction type--', nil]] + RewardsTransaction.transaction_type_select_options, :required => true %>
+  <%= f.text_field :amount, :required => true, :unit => 'rewards' %>
+  <%= f.text_area :note, :required => true, :rows => 2 %>
+  <%= f.spacer %>
+  <%= f.submit_tag 'Save' %>
+<% end -%>
+
+<script>
+JSetup.setup();
+</script>

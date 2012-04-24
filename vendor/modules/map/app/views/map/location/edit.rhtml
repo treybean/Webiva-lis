@@ -1,0 +1,38 @@
+
+
+<div class='admin_content'>
+
+<% cms_form_for :location, @location, :html => { :class => 'admin_form' } do |f| -%>
+  <%= f.text_field :name,:size => 80 %>
+  <%= f.text_field :identifier, :description => 'Leave identifier blank to create automatically',:size => 80 %>
+  <%= f.radio_buttons :active, [['Yes',true],['No',false]], :default => true %>
+  <%= f.end_user_selector :contact_user_id, :no_name => true,:label => 'Location Contact' %>
+   <% tabled_ajax_tabs ["Address",'Info','Details'],"Address" do |t| -%>
+    <% t.tabled_tab do -%>
+      <%= f.text_field :address %>
+      <%= f.text_field :city %>
+      <%= f.text_field :state, :size => 5 %>
+      <%= f.text_field :zip, :size => 10 %>
+      <%= f.text_field :lat, :label => 'Latitude', :description => 'Leave blank to generate via Google API' %>
+      <%= f.text_field :lon, :label => 'Longitude', :description => 'Leave blank to generate via Google API' %>
+    <% end -%>
+    <% t.tabled_tab do -%>
+      <%= f.filemanager_image :image_id %>
+      <%= f.filemanager_image :icon_image_id, :description => 'Specialized map icon' %>
+      <%= f.text_field :contact_name %>
+      <%= f.text_field :contact_email %>
+      <%= f.text_field :phone %>
+      <%= f.text_field :fax %>
+      <%= f.text_field :website,:description => 'include full address, including http://' %>
+      <%= f.text_area :description, :cols => 80, :rows => 15 %>
+    <% end -%>
+    <% t.tabled_tab do -%>
+      <%= f.editor_area :overview_html, :style => "width:100%;", :label => "HTML Overview",:rows => 10 %>
+      <%= f.editor_area :description_html, :style => "width:100%;", :label => "HTML Description",:rows => 20 %>
+      <%= f.image_list :image_list %>
+    <% end -%>
+  <% end -%>
+  <%= f.submit_tag @location.id ? 'Edit' : 'Create' %>
+<% end -%>
+
+</div>

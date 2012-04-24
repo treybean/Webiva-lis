@@ -1,0 +1,10 @@
+<div class='admin_content'>
+<% cms_form_for :group, @group, :html => { :class => 'admin_form' } do |f| -%>
+  <%= f.text_field :name %>
+  <%= f.color_field :color %>
+  <%= f.submit_tag @group.id ? 'Edit' : 'Create' %>
+
+<% end -%>
+
+
+</div>

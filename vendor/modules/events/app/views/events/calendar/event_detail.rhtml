@@ -1,0 +1,10 @@
+<div class='cms_form'>
+<%  paragraph_options_form_for :event_detail do |f| -%>
+  <%= f.page_selector :message_page_id %>
+  <%= f.page_selector :text_page_id %>
+  <%= f.radio_buttons :personal_events, [['Yes',true],['No',false]] %>
+  <%= f.radio_buttons :include_location, [['Yes',true],['No',false]] %>
+  <%= f.radio_buttons :open_booking, [['Yes',true],['No',false]] %>
+  <%= f.radio_buttons :overlay, [['Yes',true],['No',false]] %>  
+<% end -%>
+</div>

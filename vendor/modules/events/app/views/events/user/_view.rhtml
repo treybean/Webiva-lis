@@ -1,0 +1,52 @@
+
+<div id='events_container'>
+
+<div id='events_sessions'>
+  <b>Show Bookings</b>  | <a href='javascript:void(0);' onclick='SCMS.showHide("events_credits","events_sessions");' class='ajax_link'>  Show Credits</a><br/><br/>
+<b>Credits: </b> 
+<%  @user_credits.each do |credit_type| -%>
+<%= credit_type.events_credit_type.name if credit_type.events_credit_type %>: <%= credit_type.credits %> &nbsp;&nbsp;
+<% end -%>
+<br/><br/>
+
+
+<div id='events_booking_table'>
+  <%= render :partial => 'user_booking_table' %>
+</div>
+
+  
+</div>
+
+<div id='events_credits' style='display:none;'>
+<a href='javascript:void(0);' onclick='SCMS.showHide("events_sessions","events_credits");' class='ajax_link'>Show Bookings</a> | <b>Show Credits</b><br/>
+
+<div style='padding:20px;' class='admin_form text_field_control'>
+
+<b>Credits: </b> 
+<%  @user_credits.each do |credit_type| -%>
+<%= credit_type.events_credit_type.name if credit_type.events_credit_type %>: <%= credit_type.credits %> &nbsp;&nbsp;
+<% end -%>
+<br/><br/>
+
+
+
+<% remote_cms_unstyled_form_for  :credit, @user_credit, :url => { :action => 'view', :tab => @tab }, :update => "tab_#{@tab}", :html => { :class => 'admin_form' } do |f| -%>
+<table>
+<tr><td>Adjust Credits:</td><td>Credits:</td><td>Reason:</td></tr>
+<tr><td>
+ <%= f.select :events_credit_type_id, EventsCreditType.find_select_options(:all,:order => 'name') %>
+</td><td>
+<%= f.text_field :credit_difference, :size => 10 %> 
+</td><td>
+  <%= f.text_field :description %> <%= f.submit_tag 'Submit' %>
+</td></tr>
+</table>
+<% end -%>
+</div>
+
+<div id='events_user_credits_table'>
+  <%= render :partial => 'user_credits_table' %>
+</div>
+
+
+</div>

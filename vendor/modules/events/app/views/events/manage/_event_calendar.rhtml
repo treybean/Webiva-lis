@@ -1,0 +1,49 @@
+<table cellspacing='0' cellpadding='3' style='border-bottom:1px solid #a5caee;' class='admin_form' >
+  <tr>
+    <td colspan='4' style='height:20px;'>
+       <a class='ajax_link' onclick='EventsViewer.refreshCalendar(-1);' href='javascript:void(0);'>&lt;&lt; Previous Week</a><br/><br/><br/>
+    </td>
+    <td colspan='4' align='right'>
+       <a class='ajax_link' onclick='EventsViewer.refreshCalendar(1);' href='javascript:void(0);'>Next week &gt;&gt;</a><br/><br/><br/>
+    </td>
+  </tr>
+  <tr>
+  <tr>
+    <td></td>
+    <%  @week_days.each_with_index do |day,day_index| %>
+      <td align='center' id='week_day_<%= day_index %>' style='font-size:13px; border-bottom:2px solid #a5caee; padding:6px;' ><b><%= day[1].strftime("%a %m/%d") %></b></td>
+    <% end -%>
+  </tr>
+  <% @week_events.each_with_index do |start_time,idx| %>
+  <tr  onmouseover='SCMS.highlightRow(this);'  
+       onmouseout='SCMS.lowlightRow(this);' >
+    <td id='start_time_<%= start_time[:time] %>' style='border-right:2px solid #a5caee; padding:0 10px; height:16px; font-weight:bold;'>
+      <b><%= time_display(start_time[:time]) %></b>
+    </td>
+    <% start_time[:days].each_with_index do |day,day_index| -%>
+    <td style='border-right:2px solid #a5caee; border-bottom:1px solid #EEEEEE;' 
+        onmouseover='SCMS.highlightRow($("week_day_<%= day_index %>"));'  
+        onmouseout='SCMS.lowlightRow($("week_day_<%= day_index %>"));'>
+      <% day[:events].each do |event| %>
+      <div style='padding:6px 10px; <%= "text-decoration:line-through;" if !event.available? %>' 
+            onmouseover='this.style.backgroundColor="#fffebd";' 
+            onmouseout='this.style.backgroundColor="inherit";' >
+        <% if event.map_location && event.map_location.image %>
+          <img src='<%= event.map_location.image.url(:icon) %>' align='absmiddle' />
+        <% end -%>
+        <% if event.parent_event_id -%>
+          <%= link_to v(event.name), { :action => 'view',:path => [ event.id ]}, :class=>'no_link' %> 
+        <% else -%>
+          <b><%= link_to v(event.name), {:action => 'view',:path => [ event.id ]}, :class=>'no_link' %></b>
+        <% end -%>
+          
+          (<a href='javascript:void(0);' style='text-decoration:underline;' class='no_link' onclick='EventsViewer.showEventBooking(<%= event.id %>);'><%= "#{event.event_bookings}/#{event.event_spaces}" %></a>)
+      </div>
+      
+      <% end -%>
+    </td>
+    <% end -%>
+  <% end -%>
+  </tr>
+<table>
+

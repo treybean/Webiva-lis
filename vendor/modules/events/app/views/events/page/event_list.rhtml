@@ -1,0 +1,11 @@
+<div class='cms_form'>
+  <% paragraph_options_form_for "Event List",:event_list,@options do |f| -%>
+    <%= f.select :detail_page_id, @pages, :label => 'Detail Page' %>
+    <%= f.radio_buttons :display_type, [['Schedule','schedule'],['A-Z List','list']], :label => 'Display Type' %>
+    <%= f.select :instructor_page_id, [ ['--Select Instructor Detail Page--','' ]] + SiteNode.page_options %>
+    <%= f.select :items_per_page, @per_page, :label => 'Events per page' %>
+    <%= f.text_field :days_display,  :label => 'Days to display' %>
+    <%= f.select :events_credit_type_id, [['--Show All--',nil]] + EventsCreditType.find_select_options -%>
+  
+  <% end -%>
+</div>

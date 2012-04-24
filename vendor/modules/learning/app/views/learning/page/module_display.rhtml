@@ -1,0 +1,8 @@
+<div class='cms_form'>
+<%  paragraph_options_form_for :module_display do |f| -%>
+  <%= f.select :learning_module_id, LearningModule.select_options %>
+  <%= f.page_selector :inactive_page_id %>
+  <%= f.page_selector :active_page_id %>
+  <%= f.radio_buttons :force_redirect, [['No','no'],['Active','active'],['Inactive','inactive']] %>
+<% end -%>
+</div>

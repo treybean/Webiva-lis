@@ -1,0 +1,13 @@
+<% active_table_for :availabilities_table, @active_table_output,
+:refresh_url => url_for(:action => 'display_availabilities_table',:path => [ @slot.id ]),
+:actions => [ [ 'Delete', 'delete', 'Are you sure you want to permanently delete the selected availability?' ] ]  do |t| %>
+<tr <%= highlight_row 'availability', t.id %> >
+  <td align='left' nowrap='1'><%= entry_checkbox "availability", t.id %></td>
+  <td><%= link_to h(t.start_on.strftime(DEFAULT_DATE_FORMAT.t)), :action => 'availability', :path => t %>
+  <td><%= t.availability_type_display %></td>
+  <td><%= t.description %></td>
+  <td align='center'><%= t.end_on ? h(t.end_on.strftime(DEFAULT_DATE_FORMAT.t)) : '-' %></td>
+</tr>
+
+
+<% end -%>

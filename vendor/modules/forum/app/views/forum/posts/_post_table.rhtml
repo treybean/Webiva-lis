@@ -1,0 +1,29 @@
+<% current_time = Time.now %>
+<% active_table_for :post_table, @active_table_output,
+                    :refresh_url => url_for(:action => 'post_table', :path => [@forum_category.id, @forum.id, @topic.id]),
+                    :actions => [ ['Approve','approve'], ['Reject','reject' ] ],
+                    :more_actions => [ [ 'Delete', 'delete', 'Are you sure you want to permantently delete the selected entries?' ]
+                                     ],
+                    :style => 'width:100%' do |t| %>
+<tr <%= highlight_row 'post',t.id %> >
+  <td align='left' nowrap='1' valign='baseline'><%= entry_checkbox "post", t.id %></td>
+  <td align='center' valign='baseline'><%= link_to theme_image_tag('icons/table_actions/edit.gif'), :action => 'post', :path => [  @forum_category.id,@forum.id,@topic.id,t.id ] %></td>
+  <td align='center' valign='baseline'>
+    <%= t.approved ? theme_image_tag('icons/table_actions/rating_positive.gif') : theme_image_tag('icons/table_actions/rating_negative.gif') %>
+  </td>
+  <td width="20%" valign='baseline'><%= t.posted_by %>
+       <br /><%= 'Posted %s ago' / time_ago_in_words(t.posted_at) %>
+  </td>
+  <td valign="top">
+    <div class="forum-post">
+      <strong><%=h t.subject %></strong>
+      <div id='post_body_<%= t.id %>' style='height:50px; overflow:hidden;'>
+        <%= t.body_html %>
+      </div>
+      <a href="javascript:void(0);" onclick="$('post_body_<%= t.id %>').style.height = 'auto'; this.hide();">show full post</a>
+    </div>
+  </td>
+</tr>
+
+
+<% end -%>

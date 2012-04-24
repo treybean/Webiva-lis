@@ -1,0 +1,9 @@
+<div class='cms_form'>
+<%  paragraph_options_form_for :upcoming_list do |f| -%>
+  <%= f.select :target_type, [['All Events','all'],['Target Events only','targeted']] %>
+  <%= f.text_field :max_events, :description => 'Maximum number of events to show' %>
+  <%= f.page_selector :detail_page_id %>
+  <%= f.check_box :overlay %>
+  <%= f.page_selector :popup_page_id, :description => 'Used for Map Popups' %>
+<% end -%>
+</div>

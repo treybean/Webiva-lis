@@ -1,0 +1,2 @@
+<%= f.select :learning_module_id, [['--Select Learning Module--',nil]] + LearningModule.select_options,:vertical => true %>
+<%= f.page_selector :redirect_page_id, :label => 'Module page to redirect to after redirect',:vertical => true %>

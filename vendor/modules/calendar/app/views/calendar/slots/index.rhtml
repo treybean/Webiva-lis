@@ -1,0 +1,17 @@
+<script>
+<%= active_table_javascript %>
+</script>
+
+<% action_panel do |panel| -%>
+  <%= panel.link 'Add a Slot',:icon => 'add.gif',:action => 'edit' %>
+  <%= panel.link 'Add Availability',:icon => 'add.gif',:action => 'availability' %>
+  <%= panel.link 'Edit Slot Groups',:icon => 'edit.gif',:action => 'groups' %>
+  <%= panel.link( 'Calendar Options',:icon => 'configure.gif',:controller => '/calendar/options') if myself.has_role?('calendar_admin') %>
+<% end -%>
+<hr/>
+
+<div class='admin_content'>
+<div id='slots_table'>
+<%= render :partial => 'slots_table' %>
+</div>
+</div>

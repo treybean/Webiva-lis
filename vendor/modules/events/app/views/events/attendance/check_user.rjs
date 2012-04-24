@@ -1,0 +1,5 @@
+
+
+page.insert_html :top, :attendance_list, :partial => 'user_info'
+
+page <<  'EventViewer.clearOldEntries();'

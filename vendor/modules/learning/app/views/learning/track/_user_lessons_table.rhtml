@@ -1,0 +1,12 @@
+<% active_table_for :user_lessons_table, @tbl,
+      :refresh_url => url_for(:action => 'display_user_lessons_table',:path => [ @lmod.id, @lu.id ])  do |t| -%>
+<tr <%= highlight_row 'lesson',t %>>
+  <td><%= t.learning_section.name %></td>
+  <td><%= t.learning_lesson.title %></td>
+  <td><%= t.first_view_at.strftime(DEFAULT_DATETIME_FORMAT.t) if t.first_view_at %></td>
+  <td><%= t.last_view_at.strftime(DEFAULT_DATETIME_FORMAT.t) if t.last_view_at %></td>
+  <td><%= t.views %></td>
+</tr>
+
+<% end -%>
+

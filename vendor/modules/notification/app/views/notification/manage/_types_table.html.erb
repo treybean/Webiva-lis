@@ -1,0 +1,11 @@
+<% active_table_for :types_table, @tbl,
+   :actions => [['Set as Default', 'default']],
+   :more_actions => [['Delete', 'delete', 'Are you sure you want to delete these notification types and all their messages?']] do |t| -%>
+  <% active_tr 'type', t.id do |tr| %>
+    <td><%= tr.checkbox %></td>
+    <td><%= link_to t.name, url_for(:action => 'message_type', :path => t.id) %></td>
+    <td align="center"><%= t.default ? 'Yes' : 'No' %></td>
+    <td><%= t.notification_messages.count %></td>
+  <% end -%>
+<% end -%>
+

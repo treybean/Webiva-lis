@@ -1,0 +1,19 @@
+<% current_time = Time.now %>
+<% active_table_for :topic_table, @active_table_output,
+   :refresh_url => url_for(:action => 'topic_table', :path => [@forum_category.id, @forum.id]),
+   :actions => [['Delete','delete','Delete the selected topics?']],
+                    :style => 'width:100%' do |t| %>
+<tr <%= highlight_row 'topic',t.id %> >
+  <td align='left' nowrap='1'><%= entry_checkbox "topic", t.id %></td>
+  <td><a href='<%= posts_list_url_for(t.id) %>'><%= t.subject %></a></td>
+  <td><%= t.posted_by %></td>
+  <td><%= t.url %></td>
+  <td align='center'><%= t.forum_posts_count %></td>
+  <td align='center'><%= t.activity_count %></td>
+  <td align='center'><%= t.sticky %></td>
+  <td align='center'><%= t.updated_at ? t.updated_at.localize(Configuration.datetime_format) : '-' %></td>
+  <td align='center'><%= t.created_at ? t.created_at.localize(Configuration.datetime_format) : '-' %></td>
+</tr>
+
+
+<% end -%>
